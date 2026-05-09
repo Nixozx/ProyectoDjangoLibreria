@@ -1,0 +1,25 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block content %}
+<div class="row align-items-center py-5">
+    <div class="col-lg-7">
+        <h1 class="display-4 fw-bold mb-3">Tu próximo gran acto de aventuras comienza con una sola pagina</h1>
+        <p class="lead text-muted">
+            Bienvenido a Libreria Ruina,tu destino digital para descubrir historias nuevas. 
+            Nuestra misión es conectar a otros lectores y escritores.
+        </p>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-4">
+            <a href="#" class="btn btn-primary btn-lg px-4 me-md-2">Explorar Catálogo</a>
+        </div>
+    </div>
+    
+    <div class="col-lg-5 d-none d-lg-block">
+        <img src="{% static 'homeimage.jpg' %}" 
+             alt="Biblioteca" class="img-fluid rounded shadow shadow-lg">
+    </div>
+</div>
+
+<hr class="my-5">
+
+
+{% endblock %}
