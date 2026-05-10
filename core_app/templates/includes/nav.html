@@ -23,6 +23,11 @@
             <div class="d-flex align-items-center">
                 {% if user.is_authenticated %}
                     <span class="text-light me-3">Hola, <strong>{{ user.username }}</strong></span>
+                    {% if user.is_superuser %}
+                        <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-light me-2">
+                            <i class="bi bi-gear-fill"></i> PANEL ADMIN
+                        </a>
+                    {% endif %}
                     <form action="{% url 'logout' %}" method="post" class="d-inline">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-sm btn-outline-danger">Cerrar Sesión</button>
@@ -33,6 +38,7 @@
                     <a href="{% url 'register' %}" class="btn btn-sm btn-light fw-bold text-dark">Registro</a>
                 {% endif %}
             </div>
+            
         </div>
     </div>
 </nav>

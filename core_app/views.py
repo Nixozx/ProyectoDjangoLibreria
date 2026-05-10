@@ -1,8 +1,13 @@
 from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required   
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test
 from .models import Libro
+
+def es_admin(user):
+    return user.is_superuser
 
 def home(request):
     return render(request, 'core/home.html')
@@ -21,6 +26,28 @@ def register(request):
     else:
         form = UserCreationForm()
     return render(request, 'registration/register.html', {'form': form})
+
+
+@user_passes_test(es_admin)
+def admin_dashboard(request):
+    total_libros = Libro.objects.count()
+    libros = Libro.objects.all().order_by('-id')
+    
+    context = {
+        'total_libros': total_libros,
+        'libros': libros,
+    }
+    return render(request, 'core/dashboard.html', context)
+
+@user_passes_test(es_admin)
+def eliminar_libro(request, libro_id):
+    libro = get_object_or_404(Libro, id=libro_id)
+    
+    if libro.imagen:
+        libro.imagen.delete()
+        
+    libro.delete()
+    return redirect('dashboard')
 
 
 @login_required(login_url='login')
