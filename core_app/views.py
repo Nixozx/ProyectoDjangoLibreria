@@ -28,8 +28,11 @@ def register(request):
     return render(request, 'registration/register.html', {'form': form})
 
 
-@user_passes_test(es_admin)
 def admin_dashboard(request):
+
+    if not request.user.is_authenticated or not request.user.is_superuser:
+        return redirect('home')
+
     total_libros = Libro.objects.count()
     libros = Libro.objects.all().order_by('-id')
     
@@ -39,13 +42,11 @@ def admin_dashboard(request):
     }
     return render(request, 'core/dashboard.html', context)
 
-@user_passes_test(es_admin)
 def eliminar_libro(request, libro_id):
-    libro = get_object_or_404(Libro, id=libro_id)
+    if not request.user.is_superuser:
+        return redirect('home')
     
-    if libro.imagen:
-        libro.imagen.delete()
-        
+    libro = get_object_or_404(Libro, id=libro_id)
     libro.delete()
     return redirect('dashboard')
 
