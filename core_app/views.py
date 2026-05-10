@@ -3,11 +3,8 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required   
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from django.contrib.auth.decorators import user_passes_test
 from .models import Libro
 
-def es_admin(user):
-    return user.is_superuser
 
 def home(request):
     return render(request, 'core/home.html')
