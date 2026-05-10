@@ -1,21 +1,138 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
+
 {% block content %}
-<h2 class="mb-4">Catalogo</h2>
-<div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
-    
-    <div class="col">
-        <div class="card h-100 shadow-sm">
-            <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=500&auto=format&fit=crop" class="card-img-top" alt="Libro" style="height: 250px; object-fit: cover;">
-            <div class="card-body">
-                <h5 class="card-title text-truncate">El Principito</h5>
-                <p class="card-text text-muted small">Antoine de Saint-Exupéry</p>
-                <div class="d-flex justify-content-between align-items-center">
-                    <span class="fw-bold text-primary">$15.00</span>
-                    <button class="btn btn-sm btn-outline-primary">Añadir</button>
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <div>
+            <h2 class="text-white fw-bold mb-0">Catálogo de Libros</h2>
+            <p class="text-secondary small">Explora nuestra colección seleccionada</p>
+        </div>
+        
+        {% if user.is_authenticated %}
+            <a href="{% url 'agregar_libro' %}" class="btn-catalog-add-border">
+                AGREGAR LIBRO
+            </a>
+        {% else %}
+            <a href="{% url 'login' %}" class="text-secondary text-decoration-none small border-bottom border-secondary">
+                Inicia sesión para gestionar libros
+            </a>
+        {% endif %}
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+        
+        <div class="col">
+            <div class="card h-100 book-card">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=500&auto=format&fit=crop" class="card-img-top" alt="Libro">
+                    <div class="card-badge">$15.000</div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title text-white">El Principito</h5>
+                    <p class="card-author">Antoine de Saint-Exupéry</p>
+                    <div class="d-grid mt-3">
+                        <button class="btn btn-sm btn-view-details">Ver Detalles</button>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <div class="col">
+            <div class="card h-100 book-card">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=500&auto=format&fit=crop" class="card-img-top" alt="Libro">
+                    <div class="card-badge">$22.500</div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title text-white">Cien Años de Soledad</h5>
+                    <p class="card-author">Gabriel García Márquez</p>
+                    <div class="d-grid mt-3">
+                        <button class="btn btn-sm btn-view-details">Ver Detalles</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
+
+<style>
+     
+    .btn-catalog-add-border {
+        background-color: #ffffff;
+        color: #000000 !important;
+        padding: 10px 24px;
+        border: 2px solid #000000;  
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: 800;
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+        display: inline-block;
+        transition: all 0.2s ease;
+        box-shadow: 4px 4px 0px #000000;  
+    }
+
+    .btn-catalog-add-border:hover {
+        background-color: #f0f0f0;
+        transform: translate(-2px, -2px);  
+        box-shadow: 6px 6px 0px #000000;  
+    }
+
+    .btn-catalog-add-border:active {
+        transform: translate(2px, 2px);  
+        box-shadow: 0px 0px 0px #000000;
+    }
+
+     
+    .book-card {
+        background-color: #1f1f23;
+        border: 1px solid #303032;
+        border-radius: 8px;
+        overflow: hidden;
+        transition: 0.3s ease;
+    }
+
+    .book-card:hover {
+        border-color: #ffffff;
+    }
+
+    .book-card img {
+        height: 280px;
+        object-fit: cover;
+    }
+
+    .card-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        border: 1px solid #444;
+    }
+
+    .card-author {
+        color: #adadb8;
+        font-size: 0.85rem;
+    }
+
+    .btn-view-details {
+        background-color: transparent;
+        color: #ffffff;
+        border: 1px solid #3f3f46;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+    }
+
+    .btn-view-details:hover {
+        background-color: #ffffff;
+        color: #000000;
+    }
+</style>
 {% endblock %}

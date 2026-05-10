@@ -1,0 +1,54 @@
+{% extends 'layouts/base.html' %}
+{% block content %}
+<div class="container d-flex justify-content-center py-5">
+    <div class="card p-4 shadow-lg" style="width: 100%; max-width: 500px; background-color: #1f1f23; border: 1px solid #303032; border-radius: 10px;">
+        <h3 class="text-center mb-4 text-white fw-bold">Agregar Nuevo Libro</h3>
+        
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label class="form-label text-white small fw-bold">Nombre del Libro</label>
+                <input type="text" name="nombre" class="custom-input" placeholder="Nombre del título" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label text-white small fw-bold">Precio</label>
+                <input type="number" name="precio" class="custom-input" placeholder="0.00" step="0.01" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label text-white small fw-bold">Imagen de portada</label>
+                <input type="file" name="imagen" class="custom-input" accept="image/*" required>
+            </div>
+
+            <div class="d-grid gap-2 mt-4">
+                <button type="submit" class="btn-modern-light py-2">Guardar Libro</button>
+                <a href="{% url 'catalog' %}" class="btn btn-outline-secondary text-white border-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .custom-input {
+        width: 100%;
+        padding: 10px;
+        background-color: #0e0e10 !important;
+        border: 1px solid #3f3f46 !important;
+        color: #ffffff !important;
+        border-radius: 4px;
+        outline: none;
+    }
+    .custom-input:focus { border-color: #ffffff; }
+    .btn-modern-light {
+        background-color: #ffffff;
+        color: #000000;
+        border: none;
+        font-weight: bold;
+        border-radius: 4px;
+        transition: 0.3s;
+    }
+    .btn-modern-light:hover { background-color: #cccccc; }
+</style>
+{% endblock %}
