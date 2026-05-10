@@ -1,0 +1,115 @@
+{% extends 'layouts/base.html' %}
+{% block title %}Registro - LibreriaVirtual{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 85vh;">
+    <div class="card p-4 shadow-lg" style="width: 100%; max-width: 450px; background-color: #1f1f23; border: 1px solid #303032; border-radius: 10px;">
+        
+        <h3 class="text-center mb-4 text-white fw-bold">Únete a LibreriaVirtual</h3>
+        
+        <form method="POST">
+            {% csrf_token %}
+            
+            {% for field in form %}
+                <div class="mb-3">
+                    <label class="form-label text-white fw-bold small">{{ field.label }}</label>
+                    
+                    <div class="custom-input-wrapper">
+                        {{ field }}
+                    </div>
+
+                    {% if field.help_text %}
+                        <div class="help-text-white mt-2">
+                            {{ field.help_text|safe }}
+                        </div>
+                    {% endif %}
+                    
+                    {% for error in field.errors %}
+                        <div class="text-danger small fw-bold mt-1">
+                             {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            
+            <button type="submit" class="btn-twitch-style w-100 py-3 mt-3 fw-bold">
+                REGISTRARSE
+            </button>
+        </form>
+        
+        <div class="mt-4 pt-3 border-top border-secondary text-center">
+            <p class="text-white-50 small">
+                ¿Ya tienes una cuenta? 
+                <a href="{% url 'login' %}" class="text-twitch-link fw-bold text-decoration-none">Inicia sesión</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<style>
+     
+    .help-text-white, 
+    .help-text-white *, 
+    .form-label {
+        color: #FFFFFF !important;
+        opacity: 1 !important;
+        font-size: 0.85rem;
+    }
+
+    .help-text-white ul {
+        padding-left: 20px;
+        margin-top: 5px;
+    }
+
+    .help-text-white li {
+        list-style-type: disc !important;
+        margin-bottom: 4px;
+    }
+
+     
+    form input {
+        width: 100%;
+        padding: 12px !important;
+        background-color: #0e0e10 !important;
+        border: 2px solid #3f3f46 !important;
+        color: #FFFFFF !important;
+        border-radius: 6px !important;
+        transition: 0.2s;
+    }
+
+    form input:focus {
+        border-color: #9147ff !important;
+        outline: none !important;
+        box-shadow: 0 0 10px rgba(145, 71, 255, 0.4) !important;
+    }
+
+     
+    .btn-twitch-style {
+        background-color: #9147ff;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        transition: 0.3s;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .btn-twitch-style:hover {
+        background-color: #772ce8;
+        cursor: pointer;
+    }
+
+     
+    .text-twitch-link {
+        color: #bf94ff;
+    }
+
+    .text-twitch-link:hover {
+        color: #d1b3ff;
+    }
+
+    .text-danger {
+        color: #ff4a4a !important;
+    }
+</style>
+{% endblock %}

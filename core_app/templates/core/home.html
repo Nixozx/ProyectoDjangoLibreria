@@ -1,25 +1,59 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
+
 {% block content %}
 <div class="row align-items-center py-5">
     <div class="col-lg-7">
-        <h1 class="display-4 fw-bold mb-3">Tu próximo gran acto de aventuras comienza con una sola pagina</h1>
-        <p class="lead text-muted">
-            Bienvenido a Libreria Ruina,tu destino digital para descubrir historias nuevas. 
+        <h1 class="display-4 fw-bold mb-3" style="color: #ffffff;">Tu próximo gran acto de aventuras comienza con una sola página</h1>
+        <p class="lead" style="color: #ced4da;">
+            Bienvenido a Libreria Ruina, tu destino digital para descubrir historias nuevas. 
             Nuestra misión es conectar a otros lectores y escritores.
         </p>
+        
         <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-4">
-            <a href="#" class="btn btn-primary btn-lg px-4 me-md-2">Explorar Catálogo</a>
+            <a href="{% url 'catalog' %}" class="btn btn-outline-light btn-lg px-4 me-md-2 fw-bold">Explorar Catálogo</a>
+            
+            <a href="{% url 'register' %}" class="btn-dark-modern">Crear Cuenta</a>
         </div>
     </div>
     
     <div class="col-lg-5 d-none d-lg-block">
         <img src="{% static 'homeimage.jpg' %}" 
-             alt="Biblioteca" class="img-fluid rounded shadow shadow-lg">
+             alt="Biblioteca" class="img-fluid rounded shadow-lg" style="border: 1px solid #495057;">
     </div>
 </div>
 
-<hr class="my-5">
+<hr class="my-5" style="border-color: #495057; opacity: 0.5;">
 
+<style>
+     
+    .btn-dark-modern {
+        background-color: #ffffff;  
+        color: #121212 !important;
+        padding: 10px 25px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 1.25rem;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #ffffff;
+    }
+
+    .btn-dark-modern:hover {
+        background-color: #e9ecef;
+        color: #000000 !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+    }
+
+     
+    body {
+        background-color: #121212;
+        color: #ffffff;
+    }
+</style>
 
 {% endblock %}
