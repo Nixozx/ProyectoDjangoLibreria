@@ -1,54 +1,132 @@
 {% extends 'layouts/base.html' %}
 {% block content %}
-<div class="container d-flex justify-content-center py-5">
-    <div class="card p-4 shadow-lg" style="width: 100%; max-width: 500px; background-color: #1f1f23; border: 1px solid #303032; border-radius: 10px;">
-        <h3 class="text-center mb-4 text-white fw-bold">Agregar Nuevo Libro</h3>
+<div class="add-book-wrapper d-flex justify-content-center align-items-center py-5">
+    <div class="card p-5 shadow-lg add-book-card">
+        <h3 class="text-center mb-5 text-white fw-bold">Agregar Nuevo Libro</h3>
         
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             
-            <div class="mb-3">
+            <!-- TÍTULO -->
+            <div class="mb-4">
                 <label class="form-label text-white small fw-bold">Nombre del Libro</label>
-                <input type="text" name="nombre" class="custom-input" placeholder="Nombre del título" required>
+                <input type="text" name="nombre" class="custom-input" placeholder="Ej: El Quijote" required>
             </div>
 
-            <div class="mb-3">
+            <!-- AUTOR (Conectado a tu nuevo campo en models.py) -->
+            <div class="mb-4">
+                <label class="form-label text-white small fw-bold">Autor</label>
+                <input type="text" name="autor" class="custom-input input-autor" placeholder="Nombre del autor" required>
+            </div>
+
+            <!-- PRECIO -->
+            <div class="mb-4">
                 <label class="form-label text-white small fw-bold">Precio</label>
                 <input type="number" name="precio" class="custom-input" placeholder="0.00" step="0.01" required>
             </div>
 
-            <div class="mb-3">
+            <!-- PORTADA -->
+            <div class="mb-5">
                 <label class="form-label text-white small fw-bold">Imagen de portada</label>
-                <input type="file" name="imagen" class="custom-input" accept="image/*" required>
+                <input type="file" name="imagen" class="custom-input custom-file-input" accept="image/*" required>
             </div>
 
-            <div class="d-grid gap-2 mt-4">
-                <button type="submit" class="btn-modern-light py-2">Guardar Libro</button>
-                <a href="{% url 'catalog' %}" class="btn btn-outline-secondary text-white border-secondary">Cancelar</a>
+            <div class="d-grid gap-3">
+                <button type="submit" class="btn-ruina-master py-3">
+                    GUARDAR LIBRO
+                </button>
+                <a href="{% url 'catalog' %}" class="btn-ruina-cancel py-2 text-center text-decoration-none">
+                    Cancelar
+                </a>
             </div>
         </form>
     </div>
 </div>
 
 <style>
+    body {
+        background-color: #1a1a1c !important;
+    }
+
+    .add-book-wrapper {
+        min-height: 90vh;
+    }
+
+    .add-book-card {
+        width: 100%;
+        max-width: 420px; 
+        background-color: #252529 !important;
+        border: 1px solid #3f3f46 !important;
+        border-radius: 12px;
+    }
+
     .custom-input {
         width: 100%;
-        padding: 10px;
+        padding: 12px;
         background-color: #0e0e10 !important;
         border: 1px solid #3f3f46 !important;
         color: #ffffff !important;
-        border-radius: 4px;
+        border-radius: 6px;
         outline: none;
+        transition: 0.2s;
     }
-    .custom-input:focus { border-color: #ffffff; }
-    .btn-modern-light {
+
+    .custom-input:focus { 
+        border-color: #ffffff !important;
+    }
+
+    /* Estilo especial para resaltar el campo de autor al escribir */
+    .input-autor:focus {
+        border-color: #00d4ff !important;
+        box-shadow: 0 0 5px rgba(0, 212, 255, 0.3);
+    }
+
+    .custom-file-input::file-selector-button {
+        background-color: #3f3f46;
+        color: white;
+        border: none;
+        padding: 5px 12px;
+        border-radius: 4px;
+        margin-right: 10px;
+        cursor: pointer;
+        font-size: 0.85rem;
+    }
+
+    .btn-ruina-master {
         background-color: #ffffff;
         color: #000000;
-        border: none;
-        font-weight: bold;
+        border: 2px solid #000000;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 0.9rem;
         border-radius: 4px;
-        transition: 0.3s;
+        transition: all 0.15s ease-in-out;
+        box-shadow: 6px 6px 0px #000000;
+        cursor: pointer;
     }
-    .btn-modern-light:hover { background-color: #cccccc; }
+
+    .btn-ruina-master:hover {
+        transform: translate(-3px, -3px);
+        box-shadow: 9px 9px 0px #000000;
+    }
+
+    .btn-ruina-master:active {
+        transform: translate(4px, 4px);
+        box-shadow: 0px 0px 0px #000000;
+    }
+
+    .btn-ruina-cancel {
+        background-color: transparent;
+        color: #71717a;
+        font-weight: bold;
+        font-size: 0.85rem;
+        transition: 0.3s;
+        border: none;
+    }
+
+    .btn-ruina-cancel:hover {
+        color: #ffffff;
+    }
 </style>
 {% endblock %}

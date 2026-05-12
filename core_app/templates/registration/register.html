@@ -1,18 +1,24 @@
 {% extends 'layouts/base.html' %}
-{% block title %}Registro - LibreriaVirtual{% endblock %}
+{% block title %}Registro - Libreria Ruina{% endblock %}
 
 {% block content %}
-<div class="container d-flex justify-content-center align-items-center" style="min-height: 85vh;">
-    <div class="card p-4 shadow-lg" style="width: 100%; max-width: 450px; background-color: #1f1f23; border: 1px solid #303032; border-radius: 10px;">
+<div class="register-wrapper d-flex justify-content-center align-items-center">
+    <div class="card p-4 shadow-lg register-card">
         
-        <h3 class="text-center mb-4 text-white fw-bold">Únete a Libreria Ruina</h3>
+        <h3 class="text-center mb-4 text-white fw-bold">Únete a Librería Ruina</h3>
         
         <form method="POST">
             {% csrf_token %}
             
             {% for field in form %}
                 <div class="mb-3">
-                    <label class="form-label text-white fw-bold small">{{ field.label }}</label>
+                    <label class="form-label text-white fw-bold small">
+                        {% if field.label == "Username" %}Usuario
+                        {% elif field.label == "Email address" %}Correo electrónico
+                        {% elif field.label == "Password" %}Contraseña
+                        {% elif field.label == "Password confirmation" %}Confirmar contraseña
+                        {% else %}{{ field.label }}{% endif %}
+                    </label>
                     
                     <div class="custom-input-wrapper">
                         {{ field }}
@@ -20,19 +26,33 @@
 
                     {% if field.help_text %}
                         <div class="help-text-white mt-2">
-                            {{ field.help_text|safe }}
+                            {% if field.name == "username" %}
+                                Requerido. 150 caracteres o menos. Solo letras, dígitos y @/./+/-/_.
+                            {% elif field.name == "password" or "password" in field.label|lower %}
+                                <ul>
+                                    <li>La contraseña no puede ser similar a tu información personal.</li>
+                                    <li>Debe tener al menos 8 caracteres.</li>
+                                    <li>No puede ser una contraseña común.</li>
+                                    <li>No puede ser solo números.</li>
+                                </ul>
+                            {% else %}
+                                {{ field.help_text|safe }}
+                            {% endif %}
                         </div>
                     {% endif %}
                     
                     {% for error in field.errors %}
                         <div class="text-danger small fw-bold mt-1">
-                             {{ error }}
+                             {% if "This field is required" in error %}Este campo es obligatorio.
+                             {% elif "don't match" in error %}Las contraseñas no coinciden.
+                             {% else %}{{ error }}{% endif %}
                         </div>
                     {% endfor %}
                 </div>
             {% endfor %}
             
-            <button type="submit" class="btn-modern-light w-100 py-3 mt-3 fw-bold">
+            <!-- Botón con estilo sombra sólida Azul -->
+            <button type="submit" class="btn-ruina-info w-100 py-3 mt-3 fw-bold">
                 REGISTRARSE
             </button>
         </form>
@@ -47,26 +67,39 @@
 </div>
 
 <style>
-    /* 1. TEXTOS Y LABELS */
+    /* --- FONDO GRIS SOBRIO UNIFICADO --- */
+    body {
+        background-color: #1a1a1c !important;
+    }
+
+    .register-wrapper {
+        min-height: 85vh;
+        padding: 40px 0;
+    }
+
+    /* Tarjeta ajustada para el tema oscuro */
+    .register-card {
+        width: 100%;
+        max-width: 450px;
+        background-color: #252529 !important; /* Mismo gris que el login */
+        border: 1px solid #3f3f46 !important;
+        border-radius: 12px;
+    }
+
     .help-text-white, 
     .help-text-white *, 
     .form-label {
         color: #FFFFFF !important;
-        opacity: 1 !important;
+        opacity: 0.8;
         font-size: 0.85rem;
     }
 
     .help-text-white ul {
-        padding-left: 20px;
+        padding-left: 15px;
         margin-top: 5px;
-    }
-
-    .help-text-white li {
         list-style-type: disc !important;
-        margin-bottom: 4px;
     }
 
-    /* 2. INPUTS - MODO OSCURO SOBRIO */
     form input {
         width: 100%;
         padding: 12px !important;
@@ -74,33 +107,38 @@
         border: 1px solid #3f3f46 !important;
         color: #FFFFFF !important;
         border-radius: 4px !important;
-        transition: 0.2s;
         outline: none;
     }
 
     form input:focus {
-        border-color: #ffffff !important;
-        box-shadow: 0 0 8px rgba(255, 255, 255, 0.1) !important;
+        border-color: #00d4ff !important; /* Azul cyan al enfocar */
+        box-shadow: 0 0 8px rgba(0, 212, 255, 0.2) !important;
     }
 
-    /* 3. BOTÓN BLANCO PROFESIONAL (Sin rastro de morado) */
-    .btn-modern-light {
-        background-color: #ffffff;
-        color: #000000;
-        border: none;
+    /* Estilo del Botón: Negro con Sombra Azul Sólida */
+    .btn-ruina-info {
+        background-color: #000000;
+        color: #00d4ff; 
+        border: 2px solid #00d4ff;
         border-radius: 4px;
-        transition: 0.3s;
+        transition: all 0.2s ease;
         text-transform: uppercase;
         letter-spacing: 1px;
-    }
-
-    .btn-modern-light:hover {
-        background-color: #cccccc;
+        box-shadow: 5px 5px 0px #00d4ff;
         cursor: pointer;
-        transform: translateY(-1px);
     }
 
-    /* 4. ERRORES */
+    .btn-ruina-info:hover {
+        background-color: #00d4ff;
+        color: #000000;
+        box-shadow: 0px 0px 0px #00d4ff;
+        transform: translate(4px, 4px);
+    }
+
+    .btn-ruina-info:active {
+        transform: translate(5px, 5px);
+    }
+
     .text-danger {
         color: #ff4a4a !important;
     }

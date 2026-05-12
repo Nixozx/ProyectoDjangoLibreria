@@ -22,23 +22,24 @@
 
             <div class="d-flex align-items-center">
                 {% if user.is_authenticated %}
-                    <span class="text-light me-3">Hola, <strong>{{ user.username }}</strong></span>
+                    <span class="text-light me-3 small">HOLA, <strong class="text-white">{{ user.username|upper }}</strong></span>
+                    
                     {% if user.is_superuser %}
-                        <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-light me-2">
-                            <i class="bi bi-gear-fill"></i> PANEL ADMIN
+                        <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-light me-3">
+                            PANEL ADMIN
                         </a>
                     {% endif %}
+                    
                     <form action="{% url 'logout' %}" method="post" class="d-inline">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-sm btn-outline-danger">Cerrar Sesión</button>
+                        <!-- Restaurado al estilo original de la imagen image_8e6d28.jpg -->
+                        <button type="submit" class="btn-ruina-danger">CERRAR SESIÓN</button>
                     </form>
                 {% else %}
-                    <a href="{% url 'login' %}" class="btn btn-sm btn-outline-light me-2">Login</a>
-                    
-                    <a href="{% url 'register' %}" class="btn btn-sm btn-light fw-bold text-dark">Registro</a>
+                    <a href="{% url 'login' %}" class="btn-ruina-neon-blue me-2">LOGIN</a>
+                    <a href="{% url 'register' %}" class="btn-ruina-neon-purple">REGISTRO</a>
                 {% endif %}
             </div>
-            
         </div>
     </div>
 </nav>
@@ -46,13 +47,70 @@
 <style>
     .navbar {
         border-bottom: 1px solid #303032;
+        background-color: #0e0e10 !important;
     }
-    .btn-light {
-        background-color: #f8f9fa;
-        border: none;
+
+    /* --- ESTILO RESTAURADO (CERRAR SESIÓN) --- */
+    .btn-ruina-danger {
+        background-color: #000000;
+        color: #ff4a4a;
+        border: 2px solid #ff4a4a;
+        padding: 4px 15px;
+        font-size: 0.75rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border-radius: 4px;
+        box-shadow: 3px 3px 0px #ff4a4a; /* Sombra sólida roja original */
+        cursor: pointer;
+        transition: all 0.2s ease;
     }
-    .btn-light:hover {
-        background-color: #ffffff;
-        box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+
+    .btn-ruina-danger:hover {
+        background-color: #ff4a4a;
+        color: #000000;
+        box-shadow: 0px 0px 0px #ff4a4a;
+        transform: translate(2px, 2px);
+    }
+
+    /* --- NUEVOS ESTILOS SOLO PARA LOGIN Y REGISTRO --- */
+    .btn-ruina-neon-blue {
+        background-color: transparent;
+        color: #00d4ff;
+        border: 2px solid #00d4ff;
+        padding: 6px 18px;
+        font-size: 0.8rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-ruina-neon-blue:hover {
+        background-color: #00d4ff;
+        color: #000;
+        box-shadow: 0 0 15px rgba(0, 212, 255, 0.6);
+        transform: translateY(-2px);
+    }
+
+    .btn-ruina-neon-purple {
+        background-color: #9146ff;
+        color: white;
+        border: 2px solid #9146ff;
+        padding: 6px 18px;
+        font-size: 0.8rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 10px rgba(145, 70, 255, 0.4);
+    }
+
+    .btn-ruina-neon-purple:hover {
+        background-color: #a970ff;
+        box-shadow: 0 0 20px rgba(145, 70, 255, 0.7);
+        transform: translateY(-2px);
     }
 </style>

@@ -2,60 +2,191 @@
 {% load static %}
 
 {% block content %}
-<div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-5">
-        <div>
-            <h2 class="text-white fw-bold mb-0">Catálogo de Libros</h2>
-            <p class="text-secondary small">Explora nuestra colección seleccionada</p>
-        </div>
-        
-        {% if user.is_authenticated %}
-            <a href="{% url 'agregar_libro' %}" class="btn-catalog-add-border">
-                AGREGAR LIBRO
-            </a>
-        {% else %}
-            <a href="{% url 'login' %}" class="text-secondary text-decoration-none small border-bottom border-secondary">
-                Inicia sesión para gestionar libros
-            </a>
-        {% endif %}
-    </div>
-
-    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
-    
-    {% for libro in libros %}
-    <div class="col">
-        <div class="card h-100 book-card">
-            <div class="position-relative">
-                {% if libro.imagen %}
-                    <img src="{{ libro.imagen.url }}" class="card-img-top" alt="{{ libro.nombre }}">
-                {% else %}
-                    <img src="https://via.placeholder.com/500x700?text=Sin+Portada" class="card-img-top" alt="Sin imagen">
-                {% endif %}
-                
-                <div class="card-badge">${{ libro.precio }}</div>
+<div class="catalog-wrapper">
+    <div class="container py-5">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <div>
+                <h2 class="text-white fw-bold mb-0">Catálogo de Libros</h2>
+                <p class="text-secondary small">Explora nuestra colección seleccionada</p>
             </div>
-            <div class="card-body">
-                <h5 class="card-title text-white">{{ libro.nombre }}</h5>
-                <p class="card-author">Disponible en tienda</p> 
-                
-                <div class="d-grid mt-3">
-                    <button class="btn btn-sm btn-view-details">Ver Detalles</button>
+            
+            {% if user.is_authenticated %}
+                <a href="{% url 'agregar_libro' %}" class="btn-catalog-add-border">
+                    AGREGAR LIBRO
+                </a>
+            {% else %}
+                <a href="{% url 'login' %}" class="text-secondary text-decoration-none small border-bottom border-secondary">
+                    Inicia sesión para gestionar libros
+                </a>
+            {% endif %}
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+        
+        {% for libro in libros %}
+        <div class="col">
+            <div class="card h-100 book-card">
+                <div class="position-relative">
+                    {% if libro.imagen %}
+                        <img src="{{ libro.imagen.url }}" class="card-img-top" alt="{{ libro.nombre }}">
+                    {% else %}
+                        <img src="https://via.placeholder.com/500x700?text=Sin+Portada" class="card-img-top" alt="Sin imagen">
+                    {% endif %}
+                    
+                    <div class="card-badge">${{ libro.precio }}</div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title text-white mb-1">{{ libro.nombre }}</h5>
+                    <!-- Autor con color resaltado en la card -->
+                    <p class="card-author-name mb-3">{{ libro.autor|default:"Autor Desconocido" }}</p> 
+                    
+                    <div class="d-grid mt-auto">
+                        <button class="btn btn-sm btn-view-details" data-bs-toggle="modal" data-bs-target="#modalLibro{{ libro.id }}">
+                            Ver Detalles
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    {% empty %}
-    <div class="col-12 text-center py-5">
-        <p class="text-secondary">No hay libros registrados en el catálogo aún.</p>
-        <a href="{% url 'agregar_libro' %}" class="btn btn-outline-light btn-sm">Agregar el primero</a>
-    </div>
-    {% endfor %}
 
-</div>
+        <!-- VENTANA MODAL ACTUALIZADA -->
+        <div class="modal fade" id="modalLibro{{ libro.id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content custom-modal">
+                    <div class="modal-header border-0 pb-0">
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center pt-0">
+                        {% if libro.imagen %}
+                            <img src="{{ libro.imagen.url }}" class="img-fluid rounded mb-4 shadow-lg modal-book-img">
+                        {% endif %}
+                        <div class="text-start px-4">
+                            <h3 class="text-white fw-bold mb-1">{{ libro.nombre }}</h3>
+                            <!-- Autor resaltado en el modal -->
+                            <h6 class="mb-4" style="color: #00d4ff; font-weight: 600;">{{ libro.autor|default:"Autor Desconocido" }}</h6>
+                            
+                            <div class="d-flex justify-content-between align-items-end">
+                                <div>
+                                    <p class="text-white-50 mb-0 small">PRECIO UNITARIO</p>
+                                    <h3 class="text-success fw-bold mb-0">${{ libro.precio }}</h3>
+                                </div>
+                                <span class="badge bg-dark border border-secondary text-secondary">ID: #{{ libro.id }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0 p-4">
+                        <button type="button" class="btn-ruina-close w-100" data-bs-dismiss="modal">VOLVER AL CATÁLOGO</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <p class="text-secondary font-monospace">No hay libros registrados en el catálogo aún.</p>
+            <a href="{% url 'agregar_libro' %}" class="btn btn-outline-light btn-sm px-4">Agregar el primero</a>
+        </div>
+        {% endfor %}
+        </div>
+    </div>
 </div>
 
 <style>
-    /* Estilo del Botón con Borde Negro y Sombra Sólida */
+    /* --- LIBRERÍA RUINA: ESTILOS GENERALES --- */
+    body {
+        background-color: #1a1a1c !important;
+    }
+
+    .catalog-wrapper {
+        min-height: 100vh;
+    }
+
+    /* Estilo de la Card */
+    .book-card {
+        background-color: #252529;
+        border: 1px solid #3f3f46;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .book-card:hover {
+        border-color: #00d4ff;
+        transform: translateY(-8px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+    }
+
+    .book-card img {
+        height: 300px;
+        object-fit: cover;
+    }
+
+    /* Autor en la card */
+    .card-author-name {
+        color: #00d4ff; /* Color cian para destacar */
+        font-size: 0.85rem;
+        font-weight: 500;
+        margin-bottom: 0;
+    }
+
+    .card-badge {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background-color: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(4px);
+        color: #39ff14;
+        padding: 4px 12px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 800;
+        border: 1px solid #39ff14;
+    }
+
+    /* Estilo del Modal */
+    .custom-modal {
+        background-color: #1a1a1c !important;
+        border: 1px solid #3f3f46 !important;
+        border-radius: 20px;
+    }
+
+    .modal-book-img {
+        max-height: 380px;
+        width: auto;
+        border: 1px solid #3f3f46;
+    }
+
+    .btn-ruina-close {
+        background-color: #ffffff;
+        color: #000000;
+        border: 2px solid #000000;
+        font-weight: 900;
+        padding: 12px;
+        border-radius: 4px;
+        box-shadow: 5px 5px 0px #000000;
+        transition: 0.2s;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .btn-ruina-close:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 7px 7px 0px #000000;
+    }
+
+    .btn-view-details {
+        background-color: #2e2e33;
+        color: #ffffff;
+        border: 1px solid #3f3f46;
+        font-weight: bold;
+        transition: 0.2s;
+    }
+
+    .btn-view-details:hover {
+        background-color: #ffffff;
+        color: #000000;
+    }
+
     .btn-catalog-add-border {
         background-color: #ffffff;
         color: #000000 !important;
@@ -64,72 +195,13 @@
         border-radius: 4px;
         text-decoration: none;
         font-weight: 800;
-        font-size: 0.85rem;
-        letter-spacing: 1px;
-        display: inline-block;
-        transition: all 0.2s ease;
-        box-shadow: 4px 4px 0px #000000;  
+        box-shadow: 4px 4px 0px #000000;
+        transition: 0.2s ease;
     }
 
     .btn-catalog-add-border:hover {
-        background-color: #f0f0f0;
         transform: translate(-2px, -2px);  
         box-shadow: 6px 6px 0px #000000;  
-    }
-
-    .btn-catalog-add-border:active {
-        transform: translate(2px, 2px);  
-        box-shadow: 0px 0px 0px #000000;
-    }
-
-    /* Estilo de las tarjetas del catálogo */
-    .book-card {
-        background-color: #1f1f23;
-        border: 1px solid #303032;
-        border-radius: 8px;
-        overflow: hidden;
-        transition: 0.3s ease;
-    }
-
-    .book-card:hover {
-        border-color: #ffffff;
-    }
-
-    .book-card img {
-        height: 280px;
-        object-fit: cover;
-    }
-
-    .card-badge {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background-color: rgba(0, 0, 0, 0.8);
-        color: white;
-        padding: 4px 12px;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: bold;
-        border: 1px solid #444;
-    }
-
-    .card-author {
-        color: #adadb8;
-        font-size: 0.85rem;
-    }
-
-    .btn-view-details {
-        background-color: transparent;
-        color: #ffffff;
-        border: 1px solid #3f3f46;
-        font-weight: bold;
-        text-transform: uppercase;
-        font-size: 0.75rem;
-    }
-
-    .btn-view-details:hover {
-        background-color: #ffffff;
-        color: #000000;
     }
 </style>
 {% endblock %}
