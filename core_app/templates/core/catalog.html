@@ -15,8 +15,9 @@
                     AGREGAR LIBRO
                 </a>
             {% else %}
-                <a href="{% url 'login' %}" class="text-secondary text-decoration-none small border-bottom border-secondary">
-                    Inicia sesión para gestionar libros
+                <!-- Botón estático en Negro y Rojo -->
+                <a href="{% url 'login' %}" class="btn-login-red">
+                    LOGÉATE PARA AGREGAR LIBROS
                 </a>
             {% endif %}
         </div>
@@ -37,7 +38,6 @@
                 </div>
                 <div class="card-body">
                     <h5 class="card-title text-white mb-1">{{ libro.nombre }}</h5>
-                    <!-- Autor con color resaltado en la card -->
                     <p class="card-author-name mb-3">{{ libro.autor|default:"Autor Desconocido" }}</p> 
                     
                     <div class="d-grid mt-auto">
@@ -49,7 +49,7 @@
             </div>
         </div>
 
-         
+        <!-- Modal -->
         <div class="modal fade" id="modalLibro{{ libro.id }}" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content custom-modal">
@@ -62,7 +62,6 @@
                         {% endif %}
                         <div class="text-start px-4">
                             <h3 class="text-white fw-bold mb-1">{{ libro.nombre }}</h3>
-                            <!-- Autor resaltado en el modal -->
                             <h6 class="mb-4" style="color: #00d4ff; font-weight: 600;">{{ libro.autor|default:"Autor Desconocido" }}</h6>
                             
                             <div class="d-flex justify-content-between align-items-end">
@@ -84,7 +83,6 @@
         {% empty %}
         <div class="col-12 text-center py-5">
             <p class="text-secondary font-monospace">No hay libros registrados en el catálogo aún.</p>
-            <a href="{% url 'agregar_libro' %}" class="btn btn-outline-light btn-sm px-4">Agregar el primero</a>
         </div>
         {% endfor %}
         </div>
@@ -92,16 +90,31 @@
 </div>
 
 <style>
-     
-    body {
-        background-color: #1a1a1c !important;
+    body { background-color: #1a1a1c !important; }
+    .catalog-wrapper { min-height: 100vh; }
+
+    /* Estilo del Botón Nuevo (Negro y Rojo) */
+    .btn-login-red {
+        background-color: #000000;
+        color: #ff0000 !important;
+        padding: 10px 24px;
+        border: 2px solid #ff0000;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: 800;
+        box-shadow: 4px 4px 0px #ff0000;
+        transition: 0.2s ease;
+        text-transform: uppercase;
     }
 
-    .catalog-wrapper {
-        min-height: 100vh;
+    .btn-login-red:hover {
+        background-color: #ff0000;
+        color: #000000 !important;
+        transform: translate(-2px, -2px);
+        box-shadow: 6px 6px 0px #000000;
     }
 
-    /* Estilo de la Card */
+    /* Estilos originales mantenidos */
     .book-card {
         background-color: #252529;
         border: 1px solid #3f3f46;
@@ -109,99 +122,13 @@
         overflow: hidden;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-
-    .book-card:hover {
-        border-color: #00d4ff;
-        transform: translateY(-8px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-    }
-
-    .book-card img {
-        height: 300px;
-        object-fit: cover;
-    }
-
-    /* Autor en la card */
-    .card-author-name {
-        color: #00d4ff;  
-        font-size: 0.85rem;
-        font-weight: 500;
-        margin-bottom: 0;
-    }
-
-    .card-badge {
-        position: absolute;
-        top: 12px;
-        right: 12px;
-        background-color: rgba(0, 0, 0, 0.8);
-        backdrop-filter: blur(4px);
-        color: #39ff14;
-        padding: 4px 12px;
-        border-radius: 8px;
-        font-size: 0.85rem;
-        font-weight: 800;
-        border: 1px solid #39ff14;
-    }
-
-    /* Estilo del Modal */
-    .custom-modal {
-        background-color: #1a1a1c !important;
-        border: 1px solid #3f3f46 !important;
-        border-radius: 20px;
-    }
-
-    .modal-book-img {
-        max-height: 380px;
-        width: auto;
-        border: 1px solid #3f3f46;
-    }
-
-    .btn-ruina-close {
-        background-color: #ffffff;
-        color: #000000;
-        border: 2px solid #000000;
-        font-weight: 900;
-        padding: 12px;
-        border-radius: 4px;
-        box-shadow: 5px 5px 0px #000000;
-        transition: 0.2s;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .btn-ruina-close:hover {
-        transform: translate(-2px, -2px);
-        box-shadow: 7px 7px 0px #000000;
-    }
-
-    .btn-view-details {
-        background-color: #2e2e33;
-        color: #ffffff;
-        border: 1px solid #3f3f46;
-        font-weight: bold;
-        transition: 0.2s;
-    }
-
-    .btn-view-details:hover {
-        background-color: #ffffff;
-        color: #000000;
-    }
-
-    .btn-catalog-add-border {
-        background-color: #ffffff;
-        color: #000000 !important;
-        padding: 10px 24px;
-        border: 2px solid #000000;  
-        border-radius: 4px;
-        text-decoration: none;
-        font-weight: 800;
-        box-shadow: 4px 4px 0px #000000;
-        transition: 0.2s ease;
-    }
-
-    .btn-catalog-add-border:hover {
-        transform: translate(-2px, -2px);  
-        box-shadow: 6px 6px 0px #000000;  
-    }
+    .book-card:hover { border-color: #00d4ff; transform: translateY(-8px); }
+    .book-card img { height: 300px; object-fit: cover; }
+    .card-author-name { color: #00d4ff; font-size: 0.85rem; font-weight: 500; }
+    .card-badge { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); color: #39ff14; padding: 4px 12px; border-radius: 8px; border: 1px solid #39ff14; font-weight: 800; }
+    .custom-modal { background-color: #1a1a1c !important; border: 1px solid #3f3f46 !important; border-radius: 20px; }
+    .btn-ruina-close { background-color: #fff; color: #000; font-weight: 900; padding: 12px; border-radius: 4px; box-shadow: 5px 5px 0px #000; }
+    .btn-catalog-add-border { background-color: #fff; color: #000 !important; padding: 10px 24px; border: 2px solid #000; border-radius: 4px; text-decoration: none; font-weight: 800; box-shadow: 4px 4px 0px #000; }
+    .btn-view-details { background-color: #2e2e33; color: #fff; border: 1px solid #3f3f46; font-weight: bold; }
 </style>
 {% endblock %}
