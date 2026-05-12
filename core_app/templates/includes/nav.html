@@ -32,7 +32,7 @@
                     
                     <form action="{% url 'logout' %}" method="post" class="d-inline">
                         {% csrf_token %}
-                        <!-- Restaurado al estilo original de la imagen image_8e6d28.jpg -->
+                         
                         <button type="submit" class="btn-ruina-danger">CERRAR SESIÓN</button>
                     </form>
                 {% else %}
@@ -50,7 +50,7 @@
         background-color: #0e0e10 !important;
     }
 
-    /* --- ESTILO RESTAURADO (CERRAR SESIÓN) --- */
+     
     .btn-ruina-danger {
         background-color: #000000;
         color: #ff4a4a;
@@ -61,7 +61,7 @@
         text-transform: uppercase;
         letter-spacing: 1px;
         border-radius: 4px;
-        box-shadow: 3px 3px 0px #ff4a4a; /* Sombra sólida roja original */
+        box-shadow: 3px 3px 0px #ff4a4a;  
         cursor: pointer;
         transition: all 0.2s ease;
     }
@@ -73,7 +73,7 @@
         transform: translate(2px, 2px);
     }
 
-    /* --- NUEVOS ESTILOS SOLO PARA LOGIN Y REGISTRO --- */
+     
     .btn-ruina-neon-blue {
         background-color: transparent;
         color: #00d4ff;

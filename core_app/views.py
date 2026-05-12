@@ -5,7 +5,6 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from .models import Libro
 
-
 def home(request):
     return render(request, 'core/home.html')
 
@@ -24,9 +23,7 @@ def register(request):
         form = UserCreationForm()
     return render(request, 'registration/register.html', {'form': form})
 
-
 def admin_dashboard(request):
-
     if not request.user.is_authenticated or not request.user.is_superuser:
         return redirect('home')
 
@@ -47,18 +44,19 @@ def eliminar_libro(request, libro_id):
     libro.delete()
     return redirect('dashboard')
 
-
 @login_required(login_url='login')
 def agregar_libro(request):
     if request.method == 'POST':
-
+         
         nombre_libro = request.POST.get('nombre')
+        autor_libro = request.POST.get('autor')   
         precio_libro = request.POST.get('precio')
         imagen_libro = request.FILES.get('imagen')
 
-
+         
         nuevo_libro = Libro(
             nombre=nombre_libro,
+            autor=autor_libro,               
             precio=precio_libro,
             imagen=imagen_libro
         )
