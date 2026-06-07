@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Libro(models.Model):
     nombre = models.CharField(max_length=200)
@@ -8,3 +9,15 @@ class Libro(models.Model):
 
     def __str__(self):
         return f"{self.nombre} - {self.autor}"
+    
+class Post(models.Model):
+    titulo = models.CharField(max_length=200)
+    contenido = models.TextField()
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    autor = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def __str__(self):
+        return self.titulo

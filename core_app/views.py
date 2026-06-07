@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from .models import Libro
+from .models import Post
+from .forms import PostForm
 
 def home(request):
     return render(request, 'core/home.html')
@@ -64,3 +66,21 @@ def agregar_libro(request):
 
         return redirect('catalog')
     return render(request, 'core/agregar.html')
+
+def foro_home(request):
+    posts = Post.objects.all().order_by('-fecha_creacion')
+    return render(request, 'core/foro.html', {'posts': posts})
+
+@login_required
+def crear_post(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.autor = request.user 
+            post.save()
+            return redirect('foro_home')
+    else:
+        form = PostForm()
+    
+    return render(request, 'core/foroadd.html', {'form': form})

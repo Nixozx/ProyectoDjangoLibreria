@@ -11,6 +11,8 @@ urlpatterns = [
     path('agregar/', views.agregar_libro, name='agregar_libro'),
     path('eliminar/<int:libro_id>/', views.eliminar_libro, name='eliminar_libro'),
     path('dashboard/', views.admin_dashboard, name='dashboard'),
+    path('foro/', views.foro_home, name='foro_home'),
+    path('foro/nuevo/', views.crear_post, name='crear_post'),
 
     
 ]
