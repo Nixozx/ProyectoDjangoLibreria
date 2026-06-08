@@ -1,0 +1,52 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<div class="detalle-container" style="max-width: 800px; margin: 40px auto; padding: 20px; color: #f4efea;">
+    <div class="post-principal" style="background-color: #150f0a; padding: 30px; border-radius: 8px; border: 1px solid rgba(244,239,234,0.1); margin-bottom: 40px;">
+        <a href="{% url 'foro_home' %}" style="color: #849a86; text-decoration: none; font-size: 0.9rem;">← Volver al Foro</a>
+        <h1 style="color: #f4efea; margin-top: 15px; margin-bottom: 10px;">{{ post.titulo }}</h1>
+        <small style="color: #a99f96;">Por {{ post.autor.username }} | {{ post.fecha_creacion|date:"d M Y, H:i" }}</small>
+        <p style="color: #f4efea; margin-top: 25px; font-size: 1.1rem; white-space: pre-wrap; line-height: 1.6;">{{ post.contenido }}</p>
+    </div>
+
+    <h3 style="margin-bottom: 20px; color: #8c7d6b;">Respuestas ({{ comentarios.count }})</h3>
+    
+    <div class="lista-comentarios" style="margin-bottom: 40px;">
+        {% for comentario in comentarios %}
+            <div class="comentario-card" style="background-color: #1e1610; padding: 15px 20px; border-radius: 6px; margin-bottom: 15px; border-left: 3px solid #5d3a25;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: #a99f96; margin-bottom: 8px;">
+                    <strong>{{ comentario.autor.username }}</strong>
+                    <span>{{ comentario.fecha_creacion|date:"d M, H:i" }}</span>
+                </div>
+                <p style="color: #f4efea; white-space: pre-wrap;">{{ comentario.contenido }}</p>
+            </div>
+        {% empty %}
+            <p style="color: #a99f96; font-style: italic;">Nadie ha respondido a este post todavía.</p>
+        {% endfor %}
+    </div>
+
+    <div class="box-comentar" style="background-color: #150f0a; padding: 20px; border-radius: 6px; border: 1px solid rgba(244,239,234,0.05);">
+        <h4 style="margin-bottom: 15px;">Deja tu respuesta</h4>
+        {% if user.is_authenticated %}
+            <form method="POST">
+                {% csrf_token %}
+                <div style="margin-bottom: 15px;">
+                    {{ form.contenido }}
+                    <script>
+                        document.getElementById('{{ form.contenido.id_for_label }}').style.width = '100%';
+                        document.getElementById('{{ form.contenido.id_for_label }}').style.padding = '12px';
+                        document.getElementById('{{ form.contenido.id_for_label }}').style.backgroundColor = '#1e1610';
+                        document.getElementById('{{ form.contenido.id_for_label }}').style.border = '1px solid #8c7d6b';
+                        document.getElementById('{{ form.contenido.id_for_label }}').style.color = '#f4efea';
+                        document.getElementById('{{ form.contenido.id_for_label }}').style.borderRadius = '4px';
+                        document.getElementById('{{ form.contenido.id_for_label }}').style.resize = 'vertical';
+                    </script>
+                </div>
+                <button type="submit" style="background-color: #849a86; color: #f4efea; border: none; padding: 10px 20px; font-weight: bold; border-radius: 4px; cursor: pointer;">Enviar comentario</button>
+            </form>
+        {% else %}
+            <p style="color: #a99f96;"><a href="{% url 'login' %}" style="color: #849a86;">Inicia sesión</a> para unirte a la conversación.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -5,6 +5,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from .models import Libro
 from .models import Post
+from .models import Post, Comentario
+from .forms import PostForm, ComentarioForm
 from .forms import PostForm
 
 def home(request):
@@ -84,3 +86,29 @@ def crear_post(request):
         form = PostForm()
     
     return render(request, 'core/foroadd.html', {'form': form})
+
+def detalle_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+
+    comentarios = post.comentarios.all().order_by('fecha_creacion') 
+    
+    if request.method == 'POST':
+
+        if not request.user.is_authenticated:
+            return redirect('login')
+            
+        form = ComentarioForm(request.POST)
+        if form.is_valid():
+            comentario = form.save(commit=False)
+            comentario.post = post       
+            comentario.autor = request.user 
+            comentario.save()
+            return redirect('detalle_post', post_id=post.id)
+    else:
+        form = ComentarioForm()
+
+    return render(request, 'core/detallepost.html', {
+        'post': post,
+        'comentarios': comentarios,
+        'form': form
+    })

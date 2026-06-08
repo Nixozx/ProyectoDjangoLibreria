@@ -13,7 +13,11 @@
 
     {% for post in posts %}
         <div class="post-card" style="background-color: #150f0a; padding: 20px; border-radius: 6px; margin-bottom: 20px; border: 1px solid rgba(244,239,234,0.05);">
-            <h3 style="color: #f4efea; margin-bottom: 5px;">{{ post.titulo }}</h3>
+            <h3 style="margin-bottom: 5px;">
+                <a href="{% url 'detalle_post' post.id %}" style="color: #f4efea; text-decoration: none; transition: color 0.2s ease;" onmouseover="this.style.color='#849a86'" onmouseout="this.style.color='#f4efea'">
+                    {{ post.titulo }}
+                </a>
+            </h3>
             <small style="color: #a99f96;">Por {{ post.autor.username }} | {{ post.fecha_creacion|date:"d M Y, H:i" }}</small>
             <p style="color: #a99f96; margin-top: 15px; white-space: pre-wrap;">{{ post.contenido }}</p>
         </div>

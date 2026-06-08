@@ -13,6 +13,6 @@ urlpatterns = [
     path('dashboard/', views.admin_dashboard, name='dashboard'),
     path('foro/', views.foro_home, name='foro_home'),
     path('foro/nuevo/', views.crear_post, name='crear_post'),
+    path('foro/post/<int:post_id>/', views.detalle_post, name='detalle_post'),
 
-    
 ]
