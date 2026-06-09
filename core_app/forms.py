@@ -5,9 +5,10 @@ from .models import Post, Comentario
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['titulo', 'contenido']
+        fields = ['titulo', 'categoria', 'contenido', 'imagen']
         widgets = {
             'titulo': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Título de tu post'}),
+            'categoria': forms.Select(attrs={'class': 'form-control'}),
             'contenido': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Escribe aquí tu historia...', 'rows': 5}),
         }
 
@@ -15,11 +16,9 @@ class PostForm(forms.ModelForm):
 class ComentarioForm(forms.ModelForm):
     class Meta:
         model = Comentario
-        fields = ['contenido']
+        fields = ['contenido', 'imagen']
         widgets = {
             'contenido': forms.Textarea(attrs={
-                'class': 'form-control', 
-                'placeholder': 'Escribe una respuesta...', 
-                'rows': 3
+                'contenido': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Escribe una respuesta...', 'rows': 3}),
             }),
         }

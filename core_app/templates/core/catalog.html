@@ -7,7 +7,7 @@
         <div class="d-flex justify-content-between align-items-center mb-5">
             <div>
                 <h2 class="text-white fw-bold mb-0">Catálogo de Libros</h2>
-                <p class="text-secondary small">Explora nuestra colección seleccionada</p>
+                <p class="text-secondary small">Explora nuestra colección publicada por nuestros usuarios</p>
             </div>
             
             {% if user.is_authenticated %}
@@ -15,7 +15,7 @@
                     AGREGAR LIBRO
                 </a>
             {% else %}
-                <!-- Botón estático en Negro y Rojo -->
+
                 <a href="{% url 'login' %}" class="btn-login-red">
                     LOGÉATE PARA AGREGAR LIBROS
                 </a>
@@ -49,7 +49,7 @@
             </div>
         </div>
 
-        <!-- Modal -->
+
         <div class="modal fade" id="modalLibro{{ libro.id }}" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content custom-modal">
@@ -96,7 +96,7 @@
     }
     .catalog-wrapper { min-height: 100vh; }
 
-    /* Estilo del Botón Nuevo (Negro y Rojo) */
+
     .btn-login-red {
         background-color: #000000;
         color: #ff0000 !important;
@@ -117,7 +117,7 @@
         box-shadow: 6px 6px 0px #000000;
     }
 
-    /* Estilos originales mantenidos */
+
     .book-card {
         background-color: #150F0A;
         border: 1px solid #080604;

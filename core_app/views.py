@@ -73,15 +73,16 @@ def foro_home(request):
     posts = Post.objects.all().order_by('-fecha_creacion')
     return render(request, 'core/foro.html', {'posts': posts})
 
+
 @login_required
 def crear_post(request):
     if request.method == 'POST':
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, request.FILES) 
         if form.is_valid():
             post = form.save(commit=False)
             post.autor = request.user 
             post.save()
-            return redirect('foro_home')
+            return redirect('foro_home') 
     else:
         form = PostForm()
     
@@ -89,15 +90,13 @@ def crear_post(request):
 
 def detalle_post(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-
     comentarios = post.comentarios.all().order_by('fecha_creacion') 
     
     if request.method == 'POST':
-
         if not request.user.is_authenticated:
             return redirect('login')
             
-        form = ComentarioForm(request.POST)
+        form = ComentarioForm(request.POST, request.FILES) 
         if form.is_valid():
             comentario = form.save(commit=False)
             comentario.post = post       
@@ -105,7 +104,7 @@ def detalle_post(request, post_id):
             comentario.save()
             return redirect('detalle_post', post_id=post.id)
     else:
-        form = ComentarioForm()
+        form = ComentarioForm() 
 
     return render(request, 'core/detallepost.html', {
         'post': post,

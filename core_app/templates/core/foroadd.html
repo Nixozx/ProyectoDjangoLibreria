@@ -4,21 +4,19 @@
 <div class="form-container" style="max-width: 600px; margin: 60px auto; padding: 30px; background-color: #150f0a; border-radius: 8px; border: 1px solid rgba(244,239,234,0.05); color: #f4efea;">
     <h2 style="margin-bottom: 25px; text-align: center;">Crear nuevo Post</h2>
     
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data" id="form-post">
         {% csrf_token %}
         
         {% for field in form %}
             <div style="margin-bottom: 20px;">
                 <label style="display: block; margin-bottom: 8px; color: #a99f96;">{{ field.label }}</label>
                 {{ field }}
-                <script>
-                    document.getElementById('{{ field.id_for_label }}').style.width = '100%';
-                    document.getElementById('{{ field.id_for_label }}').style.padding = '12px';
-                    document.getElementById('{{ field.id_for_label }}').style.backgroundColor = '#1e1610';
-                    document.getElementById('{{ field.id_for_label }}').style.border = '1px solid #8c7d6b';
-                    document.getElementById('{{ field.id_for_label }}').style.color = '#f4efea';
-                    document.getElementById('{{ field.id_for_label }}').style.borderRadius = '4px';
-                </script>
+                
+                {% if field.errors %}
+                    <div style="color: #6e2626; font-size: 0.85rem; margin-top: 5px; font-weight: bold;">
+                        {{ field.errors|striptags }}
+                    </div>
+                {% endif %}
             </div>
         {% endfor %}
 
@@ -28,4 +26,33 @@
         </div>
     </form>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        
+        const inputs = document.querySelectorAll('#form-post input[type="text"], #form-post textarea, #form-post select');
+        
+        inputs.forEach(function(input) {
+            input.style.width = '100%';
+            input.style.padding = '12px';
+            input.style.backgroundColor = '#1e1610';
+            input.style.border = '1px solid #8c7d6b';
+            input.style.color = '#f4efea';
+            input.style.borderRadius = '4px';
+            input.style.boxSizing = 'border-box'; 
+            
+            if (input.tagName.toLowerCase() === 'textarea') {
+                input.style.resize = 'vertical';
+            }
+        });
+
+
+        const fileInput = document.querySelector('#form-post input[type="file"]');
+        if (fileInput) {
+            fileInput.style.color = '#a99f96';
+            fileInput.style.marginTop = '5px';
+            fileInput.style.display = 'block';
+        }
+    });
+</script>
 {% endblock %}

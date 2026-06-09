@@ -4,8 +4,28 @@
 <div class="detalle-container" style="max-width: 800px; margin: 40px auto; padding: 20px; color: #f4efea;">
     <div class="post-principal" style="background-color: #150f0a; padding: 30px; border-radius: 8px; border: 1px solid rgba(244,239,234,0.1); margin-bottom: 40px;">
         <a href="{% url 'foro_home' %}" style="color: #849a86; text-decoration: none; font-size: 0.9rem;">← Volver al Foro</a>
-        <h1 style="color: #f4efea; margin-top: 15px; margin-bottom: 10px;">{{ post.titulo }}</h1>
-        <small style="color: #a99f96;">Por {{ post.autor.username }} | {{ post.fecha_creacion|date:"d M Y, H:i" }}</small>
+        
+        <h1 style="color: #f4efea; margin-top: 15px; margin-bottom: 12px;">{{ post.titulo }}</h1>
+        
+        <small style="color: #a99f96; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;">
+            <span>Por {{ post.autor.username }}</span>
+            
+            {% if post.categoria %}
+                <span style="background-color: {{ post.categoria.color }}; color: #f4efea; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.3px;">
+                    {{ post.categoria.nombre }}
+                </span>
+            {% endif %}
+            
+            <span style="color: rgba(169, 159, 150, 0.6);">|</span>
+            <span>{{ post.fecha_creacion|date:"d M Y, H:i" }}</span>
+        </small>
+        
+        {% if post.imagen %}
+            <div style="margin-top: 10px; margin-bottom: 25px; max-width: 100%; border-radius: 6px; overflow: hidden; border: 1px solid rgba(244,239,234,0.1);">
+                <img src="{{ post.imagen.url }}" alt="Imagen de portada: {{ post.titulo }}" style="max-width: 100%; width: auto; max-height: 450px; height: auto; display: block; margin: 0 auto;">
+            </div>
+        {% endif %}
+        
         <p style="color: #f4efea; margin-top: 25px; font-size: 1.1rem; white-space: pre-wrap; line-height: 1.6;">{{ post.contenido }}</p>
     </div>
 
@@ -19,6 +39,12 @@
                     <span>{{ comentario.fecha_creacion|date:"d M, H:i" }}</span>
                 </div>
                 <p style="color: #f4efea; white-space: pre-wrap;">{{ comentario.contenido }}</p>
+                
+                {% if comentario.imagen %}
+                    <div style="margin-top: 15px; max-width: 100%; border-radius: 4px; overflow: hidden; border: 1px solid rgba(244,239,234,0.1);">
+                        <img src="{{ comentario.imagen.url }}" alt="Imagen adjunta por {{ comentario.autor.username }}" style="max-width: 400px; width: 100%; height: auto; display: block;">
+                    </div>
+                {% endif %}
             </div>
         {% empty %}
             <p style="color: #a99f96; font-style: italic;">Nadie ha respondido a este post todavía.</p>
@@ -28,21 +54,28 @@
     <div class="box-comentar" style="background-color: #150f0a; padding: 20px; border-radius: 6px; border: 1px solid rgba(244,239,234,0.05);">
         <h4 style="margin-bottom: 15px;">Deja tu respuesta</h4>
         {% if user.is_authenticated %}
-            <form method="POST">
+            <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div style="margin-bottom: 15px;">
                     {{ form.contenido }}
-                    <script>
-                        document.getElementById('{{ form.contenido.id_for_label }}').style.width = '100%';
-                        document.getElementById('{{ form.contenido.id_for_label }}').style.padding = '12px';
-                        document.getElementById('{{ form.contenido.id_for_label }}').style.backgroundColor = '#1e1610';
-                        document.getElementById('{{ form.contenido.id_for_label }}').style.border = '1px solid #8c7d6b';
-                        document.getElementById('{{ form.contenido.id_for_label }}').style.color = '#f4efea';
-                        document.getElementById('{{ form.contenido.id_for_label }}').style.borderRadius = '4px';
-                        document.getElementById('{{ form.contenido.id_for_label }}').style.resize = 'vertical';
-                    </script>
                 </div>
-                <button type="submit" style="background-color: #849a86; color: #f4efea; border: none; padding: 10px 20px; font-weight: bold; border-radius: 4px; cursor: pointer;">Enviar comentario</button>
+                
+                <div style="margin-bottom: 15px; background-color: #1e1610; padding: 12px; border-radius: 4px; border: 1px solid #8c7d6b;">
+                    <label style="display: block; color: #a99f96; font-size: 0.85rem; margin-bottom: 8px; font-weight: 600;">Adjuntar imagen (opcional):</label>
+                    {{ form.imagen }}
+                </div>
+                
+                <script>
+                    document.getElementById('{{ form.contenido.id_for_label }}').style.width = '100%';
+                    document.getElementById('{{ form.contenido.id_for_label }}').style.padding = '12px';
+                    document.getElementById('{{ form.contenido.id_for_label }}').style.backgroundColor = '#1e1610';
+                    document.getElementById('{{ form.contenido.id_for_label }}').style.border = '1px solid #8c7d6b';
+                    document.getElementById('{{ form.contenido.id_for_label }}').style.color = '#f4efea';
+                    document.getElementById('{{ form.contenido.id_for_label }}').style.borderRadius = '4px';
+                    document.getElementById('{{ form.contenido.id_for_label }}').style.resize = 'vertical';
+                </script>
+                
+                <button type="submit" style="background-color: #849a86; color: #f4efea; border: none; padding: 10px 20px; font-weight: bold; border-radius: 4px; cursor: pointer; transition: filter 0.2s;" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter='none'">Enviar comentario</button>
             </form>
         {% else %}
             <p style="color: #a99f96;"><a href="{% url 'login' %}" style="color: #849a86;">Inicia sesión</a> para unirte a la conversación.</p>
