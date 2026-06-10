@@ -3,11 +3,12 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required   
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from .models import Libro
-from .models import Post
+
+ 
+from .models import Libro, Categoria
 from .models import Post, Comentario
 from .forms import PostForm, ComentarioForm
-from .forms import PostForm
+
 
 def home(request):
     return render(request, 'core/home.html')
@@ -58,16 +59,32 @@ def agregar_libro(request):
         imagen_libro = request.FILES.get('imagen')
 
          
+        editorial_libro = request.POST.get('editorial')
+        isbn_libro = request.POST.get('isbn')
+        categoria_id = request.POST.get('categoria')
+
+         
+        categoria_seleccionada = None
+        if categoria_id:
+            categoria_seleccionada = Categoria.objects.get(id=categoria_id)
+
+         
         nuevo_libro = Libro(
             nombre=nombre_libro,
             autor=autor_libro,               
             precio=precio_libro,
-            imagen=imagen_libro
+            imagen=imagen_libro,
+            editorial=editorial_libro,       # Nuevo
+            isbn=isbn_libro,                 # Nuevo
+            categoria=categoria_seleccionada # Nuevo
         )
         nuevo_libro.save()
 
         return redirect('catalog')
-    return render(request, 'core/agregar.html')
+    
+     
+    categorias_db = Categoria.objects.all()
+    return render(request, 'core/agregar.html', {'categorias': categorias_db})
 
 def foro_home(request):
     posts = Post.objects.all().order_by('-fecha_creacion')

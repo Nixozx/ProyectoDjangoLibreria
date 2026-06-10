@@ -15,7 +15,6 @@
                     AGREGAR LIBRO
                 </a>
             {% else %}
-
                 <a href="{% url 'login' %}" class="btn-login-red">
                     LOGÉATE PARA AGREGAR LIBROS
                 </a>
@@ -36,9 +35,17 @@
                     
                     <div class="card-badge">${{ libro.precio }}</div>
                 </div>
-                <div class="card-body">
+                <div class="card-body d-flex flex-column">
                     <h5 class="card-title text-white mb-1">{{ libro.nombre }}</h5>
-                    <p class="card-author-name mb-3">{{ libro.autor|default:"Autor Desconocido" }}</p> 
+                    <p class="card-author-name mb-2">{{ libro.autor|default:"Autor Desconocido" }}</p> 
+                    
+                    <div class="mb-3">
+                        {% if libro.categoria %}
+                            <span class="badge" style="background-color: {{ libro.categoria.color }};">{{ libro.categoria.nombre }}</span>
+                        {% else %}
+                            <span class="badge bg-secondary">Sin categoría</span>
+                        {% endif %}
+                    </div>
                     
                     <div class="d-grid mt-auto">
                         <button class="btn btn-sm btn-view-details" data-bs-toggle="modal" data-bs-target="#modalLibro{{ libro.id }}">
@@ -48,7 +55,6 @@
                 </div>
             </div>
         </div>
-
 
         <div class="modal fade" id="modalLibro{{ libro.id }}" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -62,7 +68,19 @@
                         {% endif %}
                         <div class="text-start px-4">
                             <h3 class="text-white fw-bold mb-1">{{ libro.nombre }}</h3>
-                            <h6 class="mb-4" style="color: #00d4ff; font-weight: 600;">{{ libro.autor|default:"Autor Desconocido" }}</h6>
+                            <h6 class="mb-3" style="color: #00d4ff; font-weight: 600;">{{ libro.autor|default:"Autor Desconocido" }}</h6>
+                            
+                            <div class="p-3 rounded mb-4" style="background-color: #0e0e10; border: 1px solid #3f3f46;">
+                                <p class="mb-1 small"><span class="text-secondary">Categoría:</span> 
+                                    {% if libro.categoria %}
+                                        <strong style="color: {{ libro.categoria.color }};">{{ libro.categoria.nombre }}</strong>
+                                    {% else %}
+                                        <strong class="text-white">No especificada</strong>
+                                    {% endif %}
+                                </p>
+                                <p class="mb-1 small"><span class="text-secondary">Editorial:</span> <strong class="text-white">{{ libro.editorial|default:"No especificada" }}</strong></p>
+                                <p class="mb-0 small"><span class="text-secondary">ISBN:</span> <strong class="text-white">{{ libro.isbn|default:"N/A" }}</strong></p>
+                            </div>
                             
                             <div class="d-flex justify-content-between align-items-end">
                                 <div>
