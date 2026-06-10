@@ -21,6 +21,30 @@
             {% endif %}
         </div>
 
+        <div class="filter-section p-4 mb-5 rounded" style="background-color: #150F0A; border: 1px solid #3f3f46;">
+            <form method="GET" class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <label class="text-white small fw-bold mb-2">Categoría</label>
+                    <select name="categoria" class="form-select filter-input">
+                        <option value="">Todas las categorías</option>
+                        {% for c in categorias %}
+                            <option value="{{ c.id }}" {% if categoria_seleccionada|add:"0" == c.id %}selected{% endif %}>
+                                {{ c.nombre }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="text-white small fw-bold mb-2">Editorial</label>
+                    <input type="text" name="editorial" class="form-control filter-input" placeholder="Ej: Planeta" value="{{ editorial_query|default:'' }}">
+                </div>
+                <div class="col-md-4 d-flex gap-2">
+                    <button type="submit" class="btn-filter-action flex-grow-1">FILTRAR</button>
+                    <a href="{% url 'catalog' %}" class="btn-filter-clear">LIMPIAR</a>
+                </div>
+            </form>
+        </div>
+
         <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
         
         {% for libro in libros %}
@@ -100,7 +124,7 @@
 
         {% empty %}
         <div class="col-12 text-center py-5">
-            <p class="text-secondary font-monospace">No hay libros registrados en el catálogo aún.</p>
+            <p class="text-secondary font-monospace">No hay libros que coincidan con tu búsqueda.</p>
         </div>
         {% endfor %}
         </div>
@@ -108,41 +132,19 @@
 </div>
 
 <style>
-    body {
-        background-color: #1E1610;
-        color: #ffffff;
-    }
+    body { background-color: #1E1610; color: #ffffff; }
     .catalog-wrapper { min-height: 100vh; }
 
+    /* Filtros nuevos */
+    .filter-input { background-color: #1e1610 !important; border: 1px solid #3f3f46 !important; color: white !important; }
+    .filter-input:focus { border-color: #00d4ff !important; box-shadow: none; }
+    .btn-filter-action { background-color: #00d4ff; border: none; font-weight: 800; padding: 10px; border-radius: 4px; color: #000; }
+    .btn-filter-clear { background-color: transparent; border: 1px solid #3f3f46; color: #fff; padding: 10px 20px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+    .btn-filter-clear:hover { background-color: #3f3f46; color: #fff; }
 
-    .btn-login-red {
-        background-color: #000000;
-        color: #ff0000 !important;
-        padding: 10px 24px;
-        border: 2px solid #ff0000;
-        border-radius: 4px;
-        text-decoration: none;
-        font-weight: 800;
-        box-shadow: 4px 4px 0px #ff0000;
-        transition: 0.2s ease;
-        text-transform: uppercase;
-    }
-
-    .btn-login-red:hover {
-        background-color: #ff0000;
-        color: #000000 !important;
-        transform: translate(-2px, -2px);
-        box-shadow: 6px 6px 0px #000000;
-    }
-
-
-    .book-card {
-        background-color: #150F0A;
-        border: 1px solid #080604;
-        border-radius: 12px;
-        overflow: hidden;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
+    .btn-login-red { background-color: #000000; color: #ff0000 !important; padding: 10px 24px; border: 2px solid #ff0000; border-radius: 4px; text-decoration: none; font-weight: 800; box-shadow: 4px 4px 0px #ff0000; transition: 0.2s ease; text-transform: uppercase; }
+    .btn-login-red:hover { background-color: #ff0000; color: #000000 !important; transform: translate(-2px, -2px); box-shadow: 6px 6px 0px #000000; }
+    .book-card { background-color: #150F0A; border: 1px solid #080604; border-radius: 12px; overflow: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
     .book-card:hover { border-color: #00d4ff; transform: translateY(-8px); }
     .book-card img { height: 300px; object-fit: cover; }
     .card-author-name { color: #00d4ff; font-size: 0.85rem; font-weight: 500; }
