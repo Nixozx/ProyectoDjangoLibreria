@@ -20,6 +20,7 @@ def catalog(request):
      
     categoria_id = request.GET.get('categoria')
     editorial_query = request.GET.get('editorial')
+    isbn_query = request.GET.get('isbn', '')
 
      
     if categoria_id:
@@ -28,13 +29,18 @@ def catalog(request):
     if editorial_query:
          
         libros_db = libros_db.filter(editorial__icontains=editorial_query)
+    
+    if isbn_query:
+
+        libros_db = libros_db.filter(isbn__icontains=isbn_query)
 
      
     return render(request, "core/catalog.html", {
         "libros": libros_db,
         "categorias": categorias,
         "categoria_seleccionada": categoria_id,
-        "editorial_query": editorial_query
+        "editorial_query": editorial_query,
+        'isbn_query': isbn_query,
     })
 
 def register(request):

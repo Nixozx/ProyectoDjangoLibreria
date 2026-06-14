@@ -23,7 +23,7 @@
 
         <div class="filter-section p-4 mb-5 rounded" style="background-color: #150F0A; border: 1px solid #3f3f46;">
             <form method="GET" class="row g-3 align-items-end">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label class="text-white small fw-bold mb-2">Categoría</label>
                     <select name="categoria" class="form-select filter-input">
                         <option value="">Todas las categorías</option>
@@ -34,11 +34,15 @@
                         {% endfor %}
                     </select>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label class="text-white small fw-bold mb-2">Editorial</label>
                     <input type="text" name="editorial" class="form-control filter-input" placeholder="Ej: Planeta" value="{{ editorial_query|default:'' }}">
                 </div>
-                <div class="col-md-4 d-flex gap-2">
+                <div class="col-md-3">
+                    <label class="text-white small fw-bold mb-2">ISBN</label>
+                    <input type="text" name="isbn" class="form-control filter-input" placeholder="Ej: 978..." value="{{ isbn_query|default:'' }}">
+                </div>
+                <div class="col-md-3 d-flex gap-2">
                     <button type="submit" class="btn-filter-action flex-grow-1">FILTRAR</button>
                     <a href="{% url 'catalog' %}" class="btn-filter-clear">LIMPIAR</a>
                 </div>
@@ -65,7 +69,9 @@
                     
                     <div class="mb-3">
                         {% if libro.categoria %}
-                            <span class="badge" style="background-color: {{ libro.categoria.color }};">{{ libro.categoria.nombre }}</span>
+                            <span class="badge" style="background-color: {{ libro.categoria.color }};">
+                                {{ libro.categoria.nombre }}
+                            </span>
                         {% else %}
                             <span class="badge bg-secondary">Sin categoría</span>
                         {% endif %}
@@ -139,7 +145,7 @@
     .filter-input { background-color: #1e1610 !important; border: 1px solid #3f3f46 !important; color: white !important; }
     .filter-input:focus { border-color: #00d4ff !important; box-shadow: none; }
     .btn-filter-action { background-color: #00d4ff; border: none; font-weight: 800; padding: 10px; border-radius: 4px; color: #000; }
-    .btn-filter-clear { background-color: transparent; border: 1px solid #3f3f46; color: #fff; padding: 10px 20px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+    .btn-filter-clear { background-color: transparent; border: 1px solid #3f3f46; color: #fff; padding: 10px 20px; border-radius: 4px; text-decoration: none; font-weight: 600; text-align: center; }
     .btn-filter-clear:hover { background-color: #3f3f46; color: #fff; }
 
     .btn-login-red { background-color: #000000; color: #ff0000 !important; padding: 10px 24px; border: 2px solid #ff0000; border-radius: 4px; text-decoration: none; font-weight: 800; box-shadow: 4px 4px 0px #ff0000; transition: 0.2s ease; text-transform: uppercase; }
@@ -150,7 +156,7 @@
     .card-author-name { color: #00d4ff; font-size: 0.85rem; font-weight: 500; }
     .card-badge { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.8); color: #39ff14; padding: 4px 12px; border-radius: 8px; border: 1px solid #39ff14; font-weight: 800; }
     .custom-modal { background-color: #150F0A !important; border: 1px solid #3f3f46 !important; border-radius: 20px; }
-    .btn-ruina-close { background-color: #fff; color: #000; font-weight: 900; padding: 12px; border-radius: 4px; box-shadow: 5px 5px 0px #000; }
+    .btn-ruina-close { background-color: #fff; color: #000; font-weight: 900; padding: 12px; border-radius: 4px; box-shadow: 5px 5px 0px #000; border: none; }
     .btn-catalog-add-border { background-color: #fff; color: #000 !important; padding: 10px 24px; border: 2px solid #000; border-radius: 4px; text-decoration: none; font-weight: 800; box-shadow: 4px 4px 0px #000; }
     .btn-view-details { background-color: #2e2e33; color: #fff; border: 1px solid #3f3f46; font-weight: bold; }
 </style>
