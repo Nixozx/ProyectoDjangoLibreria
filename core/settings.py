@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core_app'
+    'core_app',
+    'martor'
 ]
 
 MIDDLEWARE = [
@@ -115,10 +116,86 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
+BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+
+# Configuraciones globales para Martor
+
+MARTOR_THEME = 'bootstrap'
+MARTOR_ENABLE_CONFIGS = {
+    'emoji': 'true',        # to enable/disable emoji icons.
+    'imgur': 'false',        # to enable/disable imgur/custom uploader.
+    'mention': 'false',     # to enable/disable mention
+    'jquery': 'true',       # to include/revoke jquery (require for admin default django)
+    'living': 'false',      # to enable/disable live updates in preview
+    'spellcheck': 'false',  # to enable/disable spellcheck in form textareas
+    'hljs': 'true',
+}
+
+
+MARTOR_TOOLBAR_BUTTONS = [
+    'bold', 'italic', 'horizontal', 'heading', 'pre-code',
+    'blockquote', 'unordered-list', 'ordered-list',
+    'link', 'image-link', 'image-upload', 'emoji',
+    'direct-mention', 'toggle-maximize', 'help'
+]
+
+MARTOR_ENABLE_LABEL = False
+MARTOR_ENABLE_ADMIN_CSS = True
+
+MARTOR_MARKDOWNIFY_FUNCTION = 'martor.utils.markdownify'
+MARTOR_MARKDOWNIFY_URL = '/martor/markdownify/'
+
+
+MARTOR_MARKDOWN_EXTENSIONS = [
+    'markdown.extensions.extra',
+    'markdown.extensions.nl2br',
+    'markdown.extensions.smarty',
+    'markdown.extensions.fenced_code',
+    'markdown.extensions.sane_lists',
+
+    # Custom markdown extensions.
+    'martor.extensions.urlize',
+    'martor.extensions.del_ins',      # ~~strikethrough~~ and ++underscores++
+    'martor.extensions.mention',      # to parse markdown mention
+    'martor.extensions.emoji',        # to parse markdown emoji
+    'martor.extensions.mdx_video',    # to parse embed/iframe video
+    'martor.extensions.escape_html',  # to handle the XSS vulnerabilities
+    "martor.extensions.mdx_add_id",  # to parse id like {#this_is_id}
+]
+
+MARTOR_MARKDOWN_BASE_EMOJI_URL = 'https://www.webfx.com/tools/emoji-cheat-sheet/graphics/emojis/'
+
+MARTOR_ALTERNATIVE_JS_FILE_THEME = "semantic-themed/semantic.min.js"   # default None
+MARTOR_ALTERNATIVE_CSS_FILE_THEME = "semantic-themed/semantic.min.css" # default None
+MARTOR_ALTERNATIVE_JQUERY_JS_FILE = "jquery/dist/jquery.min.js"  
+
+ALLOWED_URL_SCHEMES = [
+    "file", "ftp", "ftps", "http", "https", "irc", "mailto",
+    "sftp", "ssh", "tel", "telnet", "tftp", "vnc", "xmpp",
+]
+
+ALLOWED_HTML_TAGS = [
+    "a", "abbr", "b", "blockquote", "br", "cite", "code", "command",
+    "dd", "del", "dl", "dt", "em", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6",
+    "hr", "i", "iframe", "img", "input", "ins", "kbd", "label", "legend",
+    "li", "ol", "optgroup", "option", "p", "pre", "small", "span", "strong",
+    "sub", "sup", "table", "tbody", "td", "tfoot", "th", "thead", "tr", "u", "ul"
+]
+
+ALLOWED_HTML_ATTRIBUTES = [
+    "alt", "class", "color", "colspan", "datetime",  # "data",
+    "height", "href", "id", "name", "reversed", "rowspan",
+    "scope", "src", "style", "title", "type", "width"
+]

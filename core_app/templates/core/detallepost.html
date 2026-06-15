@@ -1,6 +1,13 @@
 {% extends 'layouts/base.html' %}
 
 {% block content %}
+{% load martortags %}
+{% load static %}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+<link href="{% static 'martor/css/martor.bootstrap.min.css' %}" type="text/css" rel="stylesheet" />
+
 <div class="detalle-container" style="max-width: 800px; margin: 40px auto; padding: 20px; color: #f4efea;">
     <div class="post-principal" style="background-color: #150f0a; padding: 30px; border-radius: 8px; border: 1px solid rgba(244,239,234,0.1); margin-bottom: 40px;">
         <a href="{% url 'foro_home' %}" style="color: #849a86; text-decoration: none; font-size: 0.9rem;">← Volver al Foro</a>
@@ -26,7 +33,9 @@
             </div>
         {% endif %}
         
-        <p style="color: #f4efea; margin-top: 25px; font-size: 1.1rem; white-space: pre-wrap; line-height: 1.6;">{{ post.contenido }}</p>
+        <div class="martor-preview" style="color: #f4efea; margin-top: 25px; font-size: 1.1rem; line-height: 1.6;">
+            {{ post.contenido|safe_markdown }}
+        </div>
     </div>
 
     <h3 style="margin-bottom: 20px; color: #8c7d6b;">Respuestas ({{ comentarios.count }})</h3>
@@ -38,7 +47,9 @@
                     <strong>{{ comentario.autor.username }}</strong>
                     <span>{{ comentario.fecha_creacion|date:"d M, H:i" }}</span>
                 </div>
-                <p style="color: #f4efea; white-space: pre-wrap;">{{ comentario.contenido }}</p>
+                <div class="martor-preview" style="color: #f4efea;">
+                    {{ comentario.contenido|safe_markdown }}
+                </div>
                 
                 {% if comentario.imagen %}
                     <div style="margin-top: 15px; max-width: 100%; border-radius: 4px; overflow: hidden; border: 1px solid rgba(244,239,234,0.1);">
@@ -56,7 +67,8 @@
         {% if user.is_authenticated %}
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                <div style="margin-bottom: 15px;">
+                
+                <div style="margin-bottom: 15px; color: #150f0a;">
                     {{ form.contenido }}
                 </div>
                 
@@ -65,16 +77,6 @@
                     {{ form.imagen }}
                 </div>
                 
-                <script>
-                    document.getElementById('{{ form.contenido.id_for_label }}').style.width = '100%';
-                    document.getElementById('{{ form.contenido.id_for_label }}').style.padding = '12px';
-                    document.getElementById('{{ form.contenido.id_for_label }}').style.backgroundColor = '#1e1610';
-                    document.getElementById('{{ form.contenido.id_for_label }}').style.border = '1px solid #8c7d6b';
-                    document.getElementById('{{ form.contenido.id_for_label }}').style.color = '#f4efea';
-                    document.getElementById('{{ form.contenido.id_for_label }}').style.borderRadius = '4px';
-                    document.getElementById('{{ form.contenido.id_for_label }}').style.resize = 'vertical';
-                </script>
-                
                 <button type="submit" style="background-color: #849a86; color: #f4efea; border: none; padding: 10px 20px; font-weight: bold; border-radius: 4px; cursor: pointer; transition: filter 0.2s;" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter='none'">Enviar comentario</button>
             </form>
         {% else %}
@@ -82,12 +84,43 @@
         {% endif %}
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script type="text/javascript" src="{% static 'plugins/js/ace.js' %}"></script>
+<script type="text/javascript" src="{% static 'martor/js/martor.bootstrap.min.js' %}"></script>
 
 
 <style>
-    body {
-        background-color: #1E1610;
-        color: #ffffff;
-    }
+    
+.martor-field,
+.martor-editor,
+.martor-preview,
+.markdown-editor {
+    background-color: #242424 !important;
+    color: #000000 !important;
+    border-color: #5d3a25 !important;
+}
+.martor-toolbar {
+    background-color: #000000 !important;
+    border-color: #5d3a25 !important;
+}
+
+.martor-preview {
+    background-color: #1e1610 !important;
+    color: #f4efea !important;
+}
+
+
+
+.martor-toolbar .btn:hover {
+    background-color: #2d2118 !important;
+}
+
+
+body {
+    background-color: #1E1610;
+    color: #ffffff;
+}
+
 </style>
 {% endblock %}

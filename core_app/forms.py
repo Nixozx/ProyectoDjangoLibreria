@@ -1,6 +1,7 @@
 from django import forms
 from .models import Post
 from .models import Post, Comentario 
+from martor.fields import MartorFormField
 
 class PostForm(forms.ModelForm):
     class Meta:
@@ -18,7 +19,5 @@ class ComentarioForm(forms.ModelForm):
         model = Comentario
         fields = ['contenido', 'imagen']
         widgets = {
-            'contenido': forms.Textarea(attrs={
-                'contenido': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Escribe una respuesta...', 'rows': 3}),
-            }),
+            'contenido': MartorFormField(),
         }

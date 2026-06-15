@@ -1,4 +1,5 @@
 from django.db import models
+from martor.models import MartorField
 from django.contrib.auth.models import User
 
 class Categoria(models.Model):
@@ -36,7 +37,7 @@ class Post(models.Model):
 class Comentario(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comentarios')
     autor = models.ForeignKey(User, on_delete=models.CASCADE)
-    contenido = models.TextField()
+    contenido = MartorField()
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     imagen = models.ImageField(upload_to='comentarios_fotos/', blank=True, null=True)
 
