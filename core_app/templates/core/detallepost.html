@@ -1,0 +1,126 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+{% load martortags %}
+{% load static %}
+
+
+
+<link href="{% static 'martor/css/martor.bootstrap.min.css' %}" type="text/css" rel="stylesheet" />
+
+<div class="detalle-container" style="max-width: 800px; margin: 40px auto; padding: 20px; color: #f4efea;">
+    <div class="post-principal" style="background-color: #150f0a; padding: 30px; border-radius: 8px; border: 1px solid rgba(244,239,234,0.1); margin-bottom: 40px;">
+        <a href="{% url 'foro_home' %}" style="color: #849a86; text-decoration: none; font-size: 0.9rem;">← Volver al Foro</a>
+        
+        <h1 style="color: #f4efea; margin-top: 15px; margin-bottom: 12px;">{{ post.titulo }}</h1>
+        
+        <small style="color: #a99f96; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;">
+            <span>Por {{ post.autor.username }}</span>
+            
+            {% if post.categoria %}
+                <span style="background-color: {{ post.categoria.color }}; color: #f4efea; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.3px;">
+                    {{ post.categoria.nombre }}
+                </span>
+            {% endif %}
+            
+            <span style="color: rgba(169, 159, 150, 0.6);">|</span>
+            <span>{{ post.fecha_creacion|date:"d M Y, H:i" }}</span>
+        </small>
+        
+        {% if post.imagen %}
+            <div style="margin-top: 10px; margin-bottom: 25px; max-width: 100%; border-radius: 6px; overflow: hidden; border: 1px solid rgba(244,239,234,0.1);">
+                <img src="{{ post.imagen.url }}" alt="Imagen de portada: {{ post.titulo }}" style="max-width: 100%; width: auto; max-height: 450px; height: auto; display: block; margin: 0 auto;">
+            </div>
+        {% endif %}
+        
+        <div class="martor-preview" style="color: #f4efea; margin-top: 25px; font-size: 1.1rem; line-height: 1.6;">
+            {{ post.contenido|safe_markdown }}
+        </div>
+    </div>
+
+    <h3 style="margin-bottom: 20px; color: #8c7d6b;">Respuestas ({{ comentarios.count }})</h3>
+    
+    <div class="lista-comentarios" style="margin-bottom: 40px;">
+        {% for comentario in comentarios %}
+            <div class="comentario-card" style="background-color: #1e1610; padding: 15px 20px; border-radius: 6px; margin-bottom: 15px; border-left: 3px solid #5d3a25;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: #a99f96; margin-bottom: 8px;">
+                    <strong>{{ comentario.autor.username }}</strong>
+                    <span>{{ comentario.fecha_creacion|date:"d M, H:i" }}</span>
+                </div>
+                <div class="martor-preview" style="color: #f4efea;">
+                    {{ comentario.contenido|safe_markdown }}
+                </div>
+                
+                {% if comentario.imagen %}
+                    <div style="margin-top: 15px; max-width: 100%; border-radius: 4px; overflow: hidden; border: 1px solid rgba(244,239,234,0.1);">
+                        <img src="{{ comentario.imagen.url }}" alt="Imagen adjunta por {{ comentario.autor.username }}" style="max-width: 400px; width: 100%; height: auto; display: block;">
+                    </div>
+                {% endif %}
+            </div>
+        {% empty %}
+            <p style="color: #a99f96; font-style: italic;">Nadie ha respondido a este post todavía.</p>
+        {% endfor %}
+    </div>
+
+    <div class="box-comentar" style="background-color: #150f0a; padding: 20px; border-radius: 6px; border: 1px solid rgba(244,239,234,0.05);">
+        <h4 style="margin-bottom: 15px;">Deja tu respuesta</h4>
+        {% if user.is_authenticated %}
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div style="margin-bottom: 15px; color: #150f0a;">
+                    {{ form.contenido }}
+                </div>
+                
+                <div style="margin-bottom: 15px; background-color: #1e1610; padding: 12px; border-radius: 4px; border: 1px solid #8c7d6b;">
+                    <label style="display: block; color: #a99f96; font-size: 0.85rem; margin-bottom: 8px; font-weight: 600;">Adjuntar imagen (opcional):</label>
+                    {{ form.imagen }}
+                </div>
+                
+                <button type="submit" style="background-color: #849a86; color: #f4efea; border: none; padding: 10px 20px; font-weight: bold; border-radius: 4px; cursor: pointer; transition: filter 0.2s;" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter='none'">Enviar comentario</button>
+            </form>
+        {% else %}
+            <p style="color: #a99f96;"><a href="{% url 'login' %}" style="color: #849a86;">Inicia sesión</a> para unirte a la conversación.</p>
+        {% endif %}
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script type="text/javascript" src="{% static 'plugins/js/ace.js' %}"></script>
+<script type="text/javascript" src="{% static 'martor/js/martor.bootstrap.min.js' %}"></script>
+
+
+<style>
+    
+.martor-field,
+.martor-editor,
+.martor-preview,
+.markdown-editor {
+    background-color: #242424 !important;
+    color: #000000 !important;
+    border-color: #5d3a25 !important;
+}
+.martor-toolbar {
+    background-color: #000000 !important;
+    border-color: #5d3a25 !important;
+}
+
+.martor-preview {
+    background-color: #1e1610 !important;
+    color: #f4efea !important;
+}
+
+
+
+.martor-toolbar .btn:hover {
+    background-color: #2d2118 !important;
+}
+
+
+body {
+    background-color: #1E1610;
+    color: #ffffff;
+}
+
+</style>
+{% endblock %}

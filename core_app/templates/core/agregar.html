@@ -1,0 +1,154 @@
+{% extends 'layouts/base.html' %}
+{% block content %}
+<div class="add-book-wrapper d-flex justify-content-center align-items-center py-5">
+    <div class="card p-5 shadow-lg add-book-card">
+        <h3 class="text-center mb-5 text-white fw-bold">Agregar Nuevo Libro</h3>
+        
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="mb-4">
+                <label class="form-label text-white small fw-bold">Nombre del Libro</label>
+                <input type="text" name="nombre" class="custom-input" placeholder="Ej: El Quijote" required>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label text-white small fw-bold">Autor</label>
+                <input type="text" name="autor" class="custom-input input-autor" placeholder="Nombre del autor" required>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label text-white small fw-bold">Editorial</label>
+                <input type="text" name="editorial" class="custom-input" placeholder="Ej: Editorial Planeta">
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label text-white small fw-bold">Categoría</label>
+                <select name="categoria" class="custom-input">
+                    <option value="" disabled selected>Selecciona una categoría</option>
+                    {% for c in categorias %}
+                        <option value="{{ c.id }}">{{ c.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label text-white small fw-bold">ISBN</label>
+                <input type="text" name="isbn" class="custom-input" placeholder="Ej: 9788437604947" maxlength="13">
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label text-white small fw-bold">Precio</label>
+                <input type="number" name="precio" class="custom-input" placeholder="0.00" step="0.01" required>
+            </div>
+
+            <div class="mb-5">
+                <label class="form-label text-white small fw-bold">Imagen de portada</label>
+                <input type="file" name="imagen" class="custom-input custom-file-input" accept="image/*" required>
+            </div>
+
+            <div class="d-grid gap-3">
+                <button type="submit" class="btn-ruina-master py-3">
+                    GUARDAR LIBRO
+                </button>
+                <a href="{% url 'catalog' %}" class="btn-ruina-cancel py-2 text-center text-decoration-none">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #1E1610;
+        color: #ffffff;
+    }
+
+    .add-book-wrapper {
+        min-height: 90vh;
+    }
+
+    .add-book-card {
+        width: 100%;
+        max-width: 420px; 
+        background-color: #150F0A !important;
+        border: 1px solid #3f3f46 !important;
+        border-radius: 12px;
+    }
+
+    .custom-input {
+        width: 100%;
+        padding: 12px;
+        background-color: #0e0e10 !important;
+        border: 1px solid #3f3f46 !important;
+        color: #ffffff !important;
+        border-radius: 6px;
+        outline: none;
+        transition: 0.2s;
+    }
+
+    .custom-input:focus { 
+        border-color: #ffffff !important;
+    }
+
+     
+    .custom-input option {
+        background-color: #150F0A;
+        color: #ffffff;
+    }
+
+    .input-autor:focus {
+        border-color: #00d4ff !important;
+        box-shadow: 0 0 5px rgba(0, 212, 255, 0.3);
+    }
+
+    .custom-file-input::file-selector-button {
+        background-color: #3f3f46;
+        color: white;
+        border: none;
+        padding: 5px 12px;
+        border-radius: 4px;
+        margin-right: 10px;
+        cursor: pointer;
+        font-size: 0.85rem;
+    }
+
+    .btn-ruina-master {
+        background-color: #ffffff;
+        color: #000000;
+        border: 2px solid #000000;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 0.9rem;
+        border-radius: 4px;
+        transition: all 0.15s ease-in-out;
+        box-shadow: 6px 6px 0px #000000;
+        cursor: pointer;
+    }
+
+    .btn-ruina-master:hover {
+        transform: translate(-3px, -3px);
+        box-shadow: 9px 9px 0px #000000;
+    }
+
+    .btn-ruina-master:active {
+        transform: translate(4px, 4px);
+        box-shadow: 0px 0px 0px #000000;
+    }
+
+    .btn-ruina-cancel {
+        background-color: transparent;
+        color: #71717a;
+        font-weight: bold;
+        font-size: 0.85rem;
+        transition: 0.3s;
+        border: none;
+    }
+
+    .btn-ruina-cancel:hover {
+        color: #ffffff;
+    }
+</style>
+{% endblock %}

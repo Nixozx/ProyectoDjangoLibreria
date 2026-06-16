@@ -1,0 +1,118 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'home' %}">
+            <img src="{% static 'navlogo.png' %}" alt="Logo Library" class="nav-logo" height="40">
+            <span class="ms-2 fw-bold">Libreria Ruina</span>
+        </a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'catalog' %}">Libros</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'foro_home' %}">Foro</a>
+                </li>
+            </ul>
+
+            <div class="d-flex align-items-center">
+                {% if user.is_authenticated %}
+                    <span class="text-light me-3 small">HOLA, <strong class="text-white">{{ user.username|upper }}</strong></span>
+                    
+                    {% if user.is_superuser %}
+                        <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-light me-3">
+                            PANEL ADMIN
+                        </a>
+                    {% endif %}
+                    
+                    <form action="{% url 'logout' %}" method="post" class="d-inline">
+                        {% csrf_token %}
+                         
+                        <button type="submit" class="btn-ruina-danger">CERRAR SESIÓN</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn-ruina-neon-blue me-2">LOGIN</a>
+                    <a href="{% url 'register' %}" class="btn-ruina-neon-purple">REGISTRO</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>
+
+<style>
+    .navbar {
+        border-bottom: 1px solid #303032;
+        background-color: #150F0A !important;
+    }
+
+     
+    .btn-ruina-danger {
+        background-color: #000000;
+        color: #ff4a4a;
+        border: 2px solid #ff4a4a;
+        padding: 4px 15px;
+        font-size: 0.75rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border-radius: 4px;
+        box-shadow: 3px 3px 0px #ff4a4a;  
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .btn-ruina-danger:hover {
+        background-color: #ff4a4a;
+        color: #000000;
+        box-shadow: 0px 0px 0px #ff4a4a;
+        transform: translate(2px, 2px);
+    }
+
+     
+    .btn-ruina-neon-blue {
+        background-color: #8C7D6B;
+        color: #F4EFEA;
+        border: 2px solid #5c5247;
+        padding: 6px 18px;
+        font-size: 0.8rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-ruina-neon-blue:hover {
+        background-color: #00d4ff;
+        color: #000;
+        box-shadow: 0 0 15px rgba(0, 212, 255, 0.6);
+        transform: translateY(-2px);
+    }
+
+    .btn-ruina-neon-purple {
+        background-color: #5D3A25;
+        color: #F4EFEA;
+        border: 2px solid #311f13;
+        padding: 6px 18px;
+        font-size: 0.8rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-ruina-neon-purple:hover {
+        background-color: #00d4ff;
+        box-shadow: 0 0 10px rgba(0, 212, 255, 0.6);
+        transform: translateY(-2px);
+    }
+</style>

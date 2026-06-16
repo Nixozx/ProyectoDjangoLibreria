@@ -1,0 +1,66 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<div class="form-container" style="max-width: 600px; margin: 60px auto; padding: 30px; background-color: #150f0a; border-radius: 8px; border: 1px solid rgba(244,239,234,0.05); color: #f4efea;">
+    <h2 style="margin-bottom: 25px; text-align: center;">Crear nuevo Post</h2>
+    
+    <form method="POST" enctype="multipart/form-data" id="form-post">
+        {% csrf_token %}
+        
+        {% for field in form %}
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; color: #a99f96;">{{ field.label }}</label>
+                {{ field }}
+                
+                {% if field.errors %}
+                    <div style="color: #6e2626; font-size: 0.85rem; margin-top: 5px; font-weight: bold;">
+                        {{ field.errors|striptags }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <div style="display: flex; gap: 15px; margin-top: 30px;">
+            <button type="submit" style="background-color: #849a86; color: #f4efea; border: none; padding: 12px 24px; font-weight: bold; border-radius: 4px; cursor: pointer; flex: 1;">Publicar</button>
+            <a href="{% url 'foro_home' %}" style="background-color: #5d3a25; color: #f4efea; text-decoration: none; text-align: center; padding: 12px 24px; font-weight: bold; border-radius: 4px; flex: 1;">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        
+        const inputs = document.querySelectorAll('#form-post input[type="text"], #form-post textarea, #form-post select');
+        
+        inputs.forEach(function(input) {
+            input.style.width = '100%';
+            input.style.padding = '12px';
+            input.style.backgroundColor = '#1e1610';
+            input.style.border = '1px solid #8c7d6b';
+            input.style.color = '#f4efea';
+            input.style.borderRadius = '4px';
+            input.style.boxSizing = 'border-box'; 
+            
+            if (input.tagName.toLowerCase() === 'textarea') {
+                input.style.resize = 'vertical';
+            }
+        });
+
+
+        const fileInput = document.querySelector('#form-post input[type="file"]');
+        if (fileInput) {
+            fileInput.style.color = '#a99f96';
+            fileInput.style.marginTop = '5px';
+            fileInput.style.display = 'block';
+        }
+    });
+</script>
+
+
+<style>
+    body {
+        background-color: #1E1610;
+        color: #ffffff;
+    }
+</style>
+{% endblock %}

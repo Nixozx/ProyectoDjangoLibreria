@@ -1,0 +1,18 @@
+from django.urls import path
+from . import views
+from django.contrib.auth import views as auth_views
+
+urlpatterns = [
+    path('', views.home, name='home'),
+    path("catalog/", views.catalog, name="catalog"),
+    path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('register/', views.register, name='register'),
+    path('agregar/', views.agregar_libro, name='agregar_libro'),
+    path('eliminar/<int:libro_id>/', views.eliminar_libro, name='eliminar_libro'),
+    path('dashboard/', views.admin_dashboard, name='dashboard'),
+    path('foro/', views.foro_home, name='foro_home'),
+    path('foro/nuevo/', views.crear_post, name='crear_post'),
+    path('foro/post/<int:post_id>/', views.detalle_post, name='detalle_post'),
+
+]
