@@ -8,8 +8,8 @@
             {% csrf_token %}
             
             <div class="mb-4">
-                <label class="form-label text-white small fw-bold">Nombre del Libro</label>
-                <input type="text" name="nombre" class="custom-input" placeholder="Ej: El Quijote" required>
+             <label class="form-label text-white small fw-bold">Nombre del Libro</label>
+             <input type="text" name="nombre" class="custom-input" placeholder="Ej: El Quijote" required>
             </div>
 
             <div class="mb-4">
@@ -24,7 +24,7 @@
 
             <div class="mb-4">
                 <label class="form-label text-white small fw-bold">Categoría</label>
-                <select name="categoria" class="custom-input">
+                <select name="categoria" class="custom-input" required>
                     <option value="" disabled selected>Selecciona una categoría</option>
                     {% for c in categorias %}
                         <option value="{{ c.id }}">{{ c.nombre }}</option>
@@ -34,7 +34,7 @@
 
             <div class="mb-4">
                 <label class="form-label text-white small fw-bold">ISBN</label>
-                <input type="text" name="isbn" class="custom-input" placeholder="Ej: 9788437604947" maxlength="13">
+                <input type="text" name="isbn" class="custom-input" placeholder="Ej: 9788437604947" maxlength="13" >
             </div>
 
             <div class="mb-4">

@@ -1,6 +1,6 @@
 from django import forms
-from .models import Post
-from .models import Post, Comentario 
+
+from .models import Post, Comentario,Categoria
 from martor.fields import MartorFormField
 
 class PostForm(forms.ModelForm):
@@ -14,6 +14,25 @@ class PostForm(forms.ModelForm):
         }
 
 
+class CategoriaForm(forms.ModelForm):
+    class Meta:
+        model = Categoria
+        fields = ['nombre', 'color']
+        labels = {
+            'nombre': 'Nombre de la Categoría',
+            'color': 'Color (Hexadecimal)',
+        }
+        widgets = {
+            'nombre': forms.TextInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'Ej. Gastos, Tareas...'
+            }),
+            'color': forms.TextInput(attrs={
+                'class': 'form-control', 
+                'type': 'color'  
+            }),
+        }
+
 class ComentarioForm(forms.ModelForm):
     class Meta:
         model = Comentario
@@ -21,3 +40,4 @@ class ComentarioForm(forms.ModelForm):
         widgets = {
             'contenido': MartorFormField(),
         }
+        

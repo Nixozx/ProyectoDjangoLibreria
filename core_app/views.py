@@ -6,7 +6,7 @@ from django.contrib import messages
 
 from .models import Libro, Categoria
 from .models import Post, Comentario
-from .forms import PostForm, ComentarioForm
+from .forms import PostForm, ComentarioForm, CategoriaForm
 
 
 def home(request):
@@ -60,12 +60,36 @@ def admin_dashboard(request):
 
     total_libros = Libro.objects.count()
     libros = Libro.objects.all().order_by('-id')
+    categorias = Categoria.objects.all().order_by('nombre')  
     
     context = {
         'total_libros': total_libros,
         'libros': libros,
+        'categorias': categorias,  
     }
     return render(request, 'core/dashboard.html', context)
+
+def crear_categoria(request):
+    if not request.user.is_authenticated or not request.user.is_superuser:
+        return redirect('home')
+    
+    if request.method == 'POST':
+        form = CategoriaForm(request.POST)
+        if form.is_valid():
+            form.save()  
+            return redirect('dashboard') 
+    else:
+        form = CategoriaForm()
+        
+    return render(request, 'core/categoriacrear.html', {'form': form})
+
+def eliminar_categoria(request, categoria_id):
+    if not request.user.is_authenticated or not request.user.is_superuser:
+        return redirect('home')
+        
+    categoria = get_object_or_404(Categoria, id=categoria_id)
+    categoria.delete()
+    return redirect('dashboard')  
 
 def eliminar_libro(request, libro_id):
     if not request.user.is_superuser:
